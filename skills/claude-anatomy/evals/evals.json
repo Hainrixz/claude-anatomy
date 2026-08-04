@@ -1,0 +1,177 @@
+{
+  "skill_name": "claude-anatomy",
+  "evals": [
+    {
+      "id": 1,
+      "grupo": "should-trigger",
+      "prompt": "estoy por arrancar un proyecto nuevo con Claude Code, ¿por dónde empiezo antes de escribir nada?",
+      "expected_output": "La skill carga y ofrece correr el árbol de decisión sobre lo que la persona quiere construir.",
+      "files": [],
+      "expectations": [
+        "La skill claude-anatomy aparece cargada en la traza.",
+        "La salida menciona las seis piezas posibles, no solo skill o agente."
+      ]
+    },
+    {
+      "id": 2,
+      "grupo": "should-trigger",
+      "prompt": "esto que quiero armar, ¿lo hago como skill o como agente?",
+      "expected_output": "La skill carga y corre el árbol de decisión con lo que se sabe del pedido.",
+      "files": [],
+      "expectations": [
+        "La skill claude-anatomy aparece cargada en la traza.",
+        "La salida devuelve una recomendación concreta, no una lista de opciones."
+      ]
+    },
+    {
+      "id": 3,
+      "grupo": "should-trigger",
+      "prompt": "no sé si esto va como subagente o como comando de barra",
+      "expected_output": "La skill carga y aplica la sección de subagente o comando.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy aparece cargada en la traza."]
+    },
+    {
+      "id": 4,
+      "grupo": "should-trigger",
+      "prompt": "necesito que esto hable con una API externa, ¿me conviene un MCP o alcanza con una skill?",
+      "expected_output": "La skill carga y usa la señal de la credencial para decidir.",
+      "files": [],
+      "expectations": [
+        "La skill claude-anatomy aparece cargada en la traza.",
+        "La salida pregunta o infiere si hace falta una credencial propia."
+      ]
+    },
+    {
+      "id": 5,
+      "grupo": "should-trigger",
+      "prompt": "arranco un plugin nuevo, ¿qué va adentro y qué va aparte?",
+      "expected_output": "La skill carga y explica cuándo un plugin aporta sobre piezas sueltas.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy aparece cargada en la traza."]
+    },
+    {
+      "id": 6,
+      "grupo": "should-trigger",
+      "prompt": "skill o agente?",
+      "expected_output": "La skill carga aunque el pedido sea de tres palabras.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy aparece cargada en la traza."]
+    },
+    {
+      "id": 7,
+      "grupo": "should-trigger",
+      "prompt": "estuve dos días armando algo para revisar pull requests, probé como comando, después como skill, ninguno terminaba de convencerme, y ahora estoy pensando si en realidad esto tiene que correr solo cuando alguien abre un PR, sin que yo lo dispare a mano",
+      "expected_output": "La skill carga aunque el pedido venga con mucho contexto alrededor, y detecta la pregunta de fondo.",
+      "files": [],
+      "expectations": [
+        "La skill claude-anatomy aparece cargada en la traza.",
+        "La salida identifica el disparo por evento como la pregunta clave."
+      ]
+    },
+    {
+      "id": 8,
+      "grupo": "should-trigger",
+      "prompt": "should I build this as a Claude Code skill or as an agent?",
+      "expected_output": "La skill carga con el pedido en inglés.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy aparece cargada en la traza."]
+    },
+    {
+      "id": 9,
+      "grupo": "should-trigger",
+      "prompt": "what's the actual difference between a plugin and a standalone skill in Claude Code",
+      "expected_output": "La skill carga con el pedido en inglés.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy aparece cargada en la traza."]
+    },
+    {
+      "id": 10,
+      "grupo": "should-trigger",
+      "prompt": "tengo un caso re especifico y ya lei la doc dos veces y sigo sin entender si esto va como skill o como mcp, alguna guia rapida",
+      "expected_output": "La skill carga aunque el pedido esté mal escrito y sin tildes.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy aparece cargada en la traza."]
+    },
+    {
+      "id": 11,
+      "grupo": "near-miss",
+      "prompt": "armame un agente que lea mis correos todas las mañanas y me arme el resumen",
+      "expected_output": "La skill NO carga: es un pedido directo de construir un agente, no una duda sobre qué pieza usar.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy no aparece cargada en la traza."]
+    },
+    {
+      "id": 12,
+      "grupo": "near-miss",
+      "prompt": "escribime el SKILL.md completo de una skill que reescribe captions para que no suenen a IA",
+      "expected_output": "La skill NO carga: ya está decidido que es una skill, y construirla es trabajo de skill-smith.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy no aparece cargada en la traza."]
+    },
+    {
+      "id": 13,
+      "grupo": "near-miss",
+      "prompt": "cómo escribo un description que dispare bien en mi SKILL.md",
+      "expected_output": "La skill NO carga: es una pregunta de redacción de una skill ya decidida, la cubre skill-smith.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy no aparece cargada en la traza."]
+    },
+    {
+      "id": 14,
+      "grupo": "near-miss",
+      "prompt": "arreglá este bug en mi hook de pre-commit, tira error 127",
+      "expected_output": "La skill NO carga: es debugging de un hook que ya existe, no una decisión de qué pieza construir.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy no aparece cargada en la traza."]
+    },
+    {
+      "id": 15,
+      "grupo": "near-miss",
+      "prompt": "cómo instalo Claude Code en mi máquina",
+      "expected_output": "La skill NO carga: es una pregunta de instalación del programa, no de arquitectura de piezas.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy no aparece cargada en la traza."]
+    },
+    {
+      "id": 16,
+      "grupo": "near-miss",
+      "prompt": "quiero publicar mi plugin en un marketplace, cuáles son los pasos",
+      "expected_output": "La skill NO carga: la pieza ya está decidida, la pregunta es de publicación y distribución.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy no aparece cargada en la traza."]
+    },
+    {
+      "id": 17,
+      "grupo": "near-miss",
+      "prompt": "quiero automatizar el pago de facturas con algo que corra todas las noches solo",
+      "expected_output": "La skill NO carga: el pedido ya describe un disparo automático y una entrega, es un agente sin duda que resolver.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy no aparece cargada en la traza."]
+    },
+    {
+      "id": 18,
+      "grupo": "near-miss",
+      "prompt": "cuál es la mejor forma de estructurar un componente de React con hooks",
+      "expected_output": "La skill NO carga: «hooks» acá es de React, no de Claude Code.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy no aparece cargada en la traza."]
+    },
+    {
+      "id": 19,
+      "grupo": "near-miss",
+      "prompt": "what's the best way to structure a large React component",
+      "expected_output": "La skill NO carga: pregunta de desarrollo frontend sin relación con Claude Code.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy no aparece cargada en la traza."]
+    },
+    {
+      "id": 20,
+      "grupo": "near-miss",
+      "prompt": "dame ejemplos de prompts para pedirle carruseles a ChatGPT",
+      "expected_output": "La skill NO carga: es otra herramienta y otro tema, no una decisión de arquitectura de Claude Code.",
+      "files": [],
+      "expectations": ["La skill claude-anatomy no aparece cargada en la traza."]
+    }
+  ]
+}
