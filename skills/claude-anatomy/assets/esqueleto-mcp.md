@@ -1,32 +1,102 @@
-# Esqueleto de un servidor MCP
+# Esqueleto: servidor MCP
 
-Un servidor MCP no se escribe desde cero acá: casi siempre ya existe uno para
-el servicio que necesitás, y lo que se arma es la conexión. Este esqueleto es
-esa conexión, no el servidor.
+Un servidor MCP casi nunca se escribe desde cero. Los servicios conocidos
+—GitHub, Slack, Postgres, Sentry, Notion— ya tienen el suyo. Lo que se arma
+primero es la **conexión**.
 
-Suelto, en la raíz del proyecto:
+## Conectar uno que ya existe
 
+```bash
+claude mcp add --transport http {{nombre}} https://{{servidor}}/mcp
+claude mcp add --env API_KEY=... --transport stdio {{nombre}} -- {{comando}}
 ```
-.mcp.json
-```
+
+Lo mismo escrito a mano, en `.mcp.json` en la raíz del proyecto:
 
 ```json
 {
-  "{{nombre-del-servidor}}": {
-    "command": "{{comando-para-arrancarlo}}",
-    "args": ["{{argumento-1}}", "{{argumento-2}}"],
-    "env": {
-      "{{NOMBRE-DE-LA-VARIABLE}}": "{{de-donde-sale-el-valor}}"
+  "mcpServers": {
+    "{{nombre}}": {
+      "command": "{{comando}}",
+      "args": ["{{argumento}}"],
+      "env": { "{{VARIABLE}}": "${{{VARIABLE}}}" }
     }
   }
 }
 ```
 
-Dentro de un plugin, el mismo bloque va incrustado en `plugin.json` bajo la
-clave `mcpServers`, y cualquier ruta a un archivo del propio plugin usa
-`${CLAUDE_PLUGIN_ROOT}` en vez de una ruta relativa suelta.
+**El envoltorio `mcpServers` va siempre.** En el `.mcp.json` del proyecto y en el
+de un plugin, los dos. Sin él, el servidor no carga.
 
-Cualquier variable de entorno que el servidor necesite se declara en
-`env.example`, con el nombre nada más, nunca con el valor real. La skill de
-criterio que llama a este servidor —si hace falta una— no ve ni guarda esa
-variable: la maneja el servidor.
+Una entrada con `url` y sin `type` es un error de configuración: Claude Code la
+lee como si fuera un servidor por stdio y la saltea.
+
+## Los transportes
+
+| Transporte | Cuándo |
+|---|---|
+| `stdio` | Corre como proceso local en tu máquina. Para lo que necesita tocar el disco |
+| `http` | Servidores remotos. Es el recomendado. Acepta el alias `streamable-http` |
+| `sse` | Obsoleto. Solo si el servicio no expone otra cosa |
+| `ws` | Conexión persistente en las dos direcciones. Sin OAuth |
+
+## Las credenciales
+
+Nunca adentro del `.mcp.json` que se versiona. Van por variable de entorno, y el
+repo lleva un `env.example` con los nombres y sin los valores:
+
+```
+{{SERVICIO}}_API_KEY=
+{{SERVICIO}}_URL=
+```
+
+## Si lo vas a escribir vos
+
+```
+{{nombre}}-mcp/
+├── servidor/
+│   ├── servidor.py       ← el proceso que habla el protocolo
+│   └── tools.py          ← una función por operación
+├── .mcp.json
+├── env.example
+└── pruebas/
+```
+
+Dos reglas que ahorran disgustos:
+
+**Exponé las operaciones que alguien pidió, no las que la API tiene.** Envolver
+cuarenta endpoints «por las dudas» no cuesta tokens como costaba antes —los
+esquemas quedan diferidos— pero sí empeora la elección: entre cuarenta nombres
+parecidos el modelo acierta menos que entre seis.
+
+**Separá lo que consulta de lo que escribe.** Y que lo que escribe pida
+confirmación.
+
+## Si el sistema de afuera tiene que empujar
+
+Todo lo de arriba es Claude llamando hacia afuera. Existe la dirección contraria:
+que el sistema externo meta un evento adentro de una sesión abierta —el CI que
+falló, el mensaje que llegó— y Claude reaccione.
+
+Eso es un canal. Es un servidor MCP que declara la capacidad `claude/channel` y
+se prende con `--channels` al arrancar. La pieza es la misma; lo que cambia es
+para qué lado va la flecha.
+
+## Adentro de un plugin
+
+El `.mcp.json` va en la raíz del plugin, con el mismo envoltorio, y las rutas se
+escriben con `${CLAUDE_PLUGIN_ROOT}`:
+
+```json
+{
+  "mcpServers": {
+    "{{nombre}}": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/servidor/servidor.py"
+    }
+  }
+}
+```
+
+Una ruta relativa ahí adentro se resuelve contra la carpeta de trabajo del que
+instala, que no es donde está el plugin. Anda en tu máquina y falla en la de al
+lado.

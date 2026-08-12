@@ -1,0 +1,33 @@
+{
+  "name": "claude-anatomy",
+  "owner": {
+    "name": "Hainrixz",
+    "url": "https://github.com/Hainrixz"
+  },
+  "metadata": {
+    "description": "Enseña a decidir si algo debe ser skill, plugin, subagente, comando, MCP o hook, con la regla de decisión y ejemplos.",
+    "homepage": "https://github.com/Hainrixz/claude-anatomy",
+    "website": "https://www.tododeia.com"
+  },
+  "plugins": [
+    {
+      "name": "claude-anatomy",
+      "source": "./",
+      "version": "0.2.0",
+      "description": "Enseña a decidir si algo debe ser skill, plugin, subagente, comando, MCP o hook, con la regla de decisión y ejemplos.",
+      "keywords": [
+        "skill",
+        "claude-code",
+        "la-forja",
+        "claude",
+        "anatomy"
+      ],
+      "author": {
+        "name": "Hainrixz",
+        "url": "https://github.com/Hainrixz"
+      },
+      "license": "MIT",
+      "homepage": "https://github.com/Hainrixz/claude-anatomy"
+    }
+  ]
+}

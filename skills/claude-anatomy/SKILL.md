@@ -1,266 +1,262 @@
 ---
 name: claude-anatomy
-description: "ES: Te dice si lo que vas a construir en Claude Code tiene que ser skill, plugin, subagente, comando, servidor MCP o hook, con el árbol de decisión y el esqueleto de archivos de la pieza elegida. Usala al arrancar cualquier proyecto, y cuando preguntes «esto lo hago como skill o como agente», «va como subagente o comando», «necesito un MCP o alcanza con una skill» o «qué va adentro de un plugin y qué va aparte», aunque no nombres esas palabras. EN: Tells you whether what you're building in Claude Code should be a skill, plugin, subagent, command, MCP server or hook, with the decision tree and file skeleton for the piece you pick. Use it at the start of any project, and on «skill or agent», «subagent or command», «do I need an MCP or does a skill cover it», or «what goes in a plugin versus on its own», even without those exact words."
+description: "ES: Te dice qué tenés que construir en Claude Code y te da el esqueleto de archivos: skill y en qué modo, subagente, hook, servidor MCP, plugin, marketplace, rutina programada, artefacto (una página web), app con el Agent SDK, una línea en CLAUDE.md, o nada. Corré esto antes del primer archivo. Se dispara con «esto lo hago como skill o como agente», «necesito un MCP o alcanza con una skill», «va como subagente o como comando», «quiero una página web hecha con Claude», «quiero una app que use Claude adentro» o «por dónde empiezo». EN: Tells you what to build in Claude Code and hands you the file skeleton: skill and which invocation mode, subagent, hook, MCP server, plugin, marketplace, scheduled routine, artifact web page, Agent SDK app, a CLAUDE.md line, or nothing at all. Triggers on «skill or agent», «do I need an MCP or is a skill enough», «should this be a slash command», «I want a web page built with Claude», «I want an app with Claude inside», «where do I even start»."
+license: MIT
 metadata:
-  version: 0.1.0
+  version: 0.2.0
 ---
 
 # Anatomía de Claude Code
 
 ## El dolor
 
-Arrancás un proyecto con Claude Code y a la media hora ya tenés la duda: esto que
-quiero armar, ¿es una skill? ¿Un agente? ¿Un comando? Probás una forma, no anda
-como esperabas, la desarmás y probás otra. Cada vuelta cuesta tiempo, y al final
-terminaste con un comando que debería haber sido una skill, o con un servidor MCP
-para algo que un archivo de texto resolvía solo.
+Abrís Claude Code y hay skills, subagentes, comandos, plugins, servidores MCP,
+hooks, canales, rutinas y artefactos. Nueve palabras, ninguna explicada, y una
+decisión que hay que tomar en el minuto uno.
 
-La pregunta se repite en cada proyecto nuevo porque nadie la responde una sola vez
-y la deja escrita.
+Lo más común es armar un subagente para algo que era un archivo de texto, o un
+servidor MCP para algo que resolvía un script de veinte líneas.
+
+El costo no se ve el primer día. Se ve al mes, cuando la sesión arranca pesada,
+el modelo elige mal seguido, y nadie se acuerda de por qué esa carpeta está ahí.
+
+Este archivo no enseña a escribir cada pieza. Enseña a elegir cuál.
 
 ## Cuándo usar esto
 
-Al arrancar cualquier proyecto de Claude Code, antes de escribir el primer
-archivo. También cada vez que dudes entre dos formas para la misma idea, o que
-alguien te pregunte «esto lo hago como skill o como agente» sin saber que la
-pregunta tiene más de dos respuestas posibles.
+Al empezar cualquier proyecto, antes del primer archivo. Y cada vez que dudás
+entre dos formas para la misma idea.
 
-## Las seis piezas, en una frase
+También sirve para el caso que casi nadie contempla: que la respuesta correcta
+sea que no hay que construir nada.
 
-**Skill.** Conocimiento que el modelo consulta cuando el tema aparece. No corre
-sola: se carga en capas, y solo la primera se paga siempre.
+## Las tres preguntas que más rinden
 
-**Plugin.** Un paquete que agrupa piezas —skills, subagentes, comandos, hooks,
-hasta un servidor MCP— bajo un manifiesto único, para instalarlas y
-desinstalarlas juntas. No es una pieza nueva: es el empaque de varias.
+Con estas tres alcanza para la mayoría de los casos, sin recorrer el árbol
+entero.
 
-**Subagente.** Un trabajador que corre en un contexto aparte, con su propio
-prompt de sistema, invocado por el hilo principal para delegar un pedazo de
-trabajo sin llenar la conversación con los pasos intermedios. Devuelve un
-informe al final.
+```
+1. ¿Quién aprieta el botón?
+   Vos, escribiendo /algo · el modelo, cuando aparece el tema · un evento de
+   Claude Code · el reloj · un sistema de afuera · nadie, es una regla que
+   Claude tiene que saber siempre.
 
-**Comando.** Una instrucción guardada que la persona dispara escribiendo su
-nombre con la barra. La decisión de cuándo correr no la toma el modelo: la toma
-quien tipea.
+2. ¿Toca algo de afuera que pida su propia credencial?
+   Una base, una API, la cuenta de un servicio.
 
-**Servidor MCP.** Un proceso aparte que expone herramientas con argumentos y
-respuesta ya definidos, para que el modelo las llame. Es la puerta hacia un
-sistema externo: una base, una API, un servicio con su propia autenticación.
+3. Cuando termina, ¿qué queda y quién lo mira?
+   Texto en tu terminal · una pantalla que alguien abre en el navegador ·
+   archivos cambiados en el repo · una respuesta que consume otro programa.
+```
 
-**Hook.** Un comando que corre solo, disparado por un evento del propio Claude
-Code —antes de usar una herramienta, después de una respuesta, al cerrar la
-sesión—, sin pasar por el criterio del modelo. Con el mismo evento, hace
-siempre lo mismo.
+La tercera es la que más se olvida, y es la que decide si esto vive adentro de
+una sesión o no.
+
+## Paso 0 · ¿Hace falta construir algo?
+
+Cuatro preguntas. La primera que da sí termina acá.
+
+```
+0.1 ¿Lo que falta es que Claude se acuerde de una regla tuya?
+    «usá pnpm, no npm» · «corré los tests antes de commitear»
+    SÍ → No construyas ninguna pieza: es una línea en CLAUDE.md.
+         Si la regla aplica solo a ciertos archivos, va en .claude/rules/
+         con `paths:`, y entra nada más cuando Claude toca esos archivos.
+
+0.2 ¿Ya lo hizo otro?
+    GitHub, Slack, Postgres, Notion y Sentry ya tienen servidor MCP. Y hay
+    plugins publicados para buena parte del resto.
+    SÍ → No construyas nada. Instalalo.
+
+0.3 ¿Lo que te molesta es CÓMO te contesta, no lo que sabe?
+    Querés otro tono, más explicación, que siempre arranque con un diagrama.
+    SÍ → No es una skill: es un estilo de salida, en .claude/output-styles/.
+         Ojo, se lee una vez al arrancar: aplica después de /clear.
+
+0.4 ¿Lo resuelve un script, sin modelo adentro?
+    Si siempre se hace igual y no hay nada que decidir, es un script.
+    SÍ → Escribilo. Claude lo corre con Bash cuando haga falta.
+    NO → seguí al Paso 1.
+```
+
+Buena parte de los casos que llegan hasta acá se resuelven en este paso. No es
+una broma: la pieza más chica que resuelve el problema es casi siempre la
+correcta, y siempre es la más fácil de tirar cuando te equivocaste.
+
+## Paso 1 · ¿Adentro de una sesión, o afuera?
+
+Tres preguntas. La primera que da sí termina acá.
+
+```
+1.1 ¿Lo que se entrega es una pantalla que alguien mira o comparte —un
+    tablero, un informe con gráficos, un diff anotado— y no texto en la
+    terminal?
+    SÍ → Artefacto: una página que Claude publica desde la sesión y
+         actualiza en el mismo link.
+         El límite, antes de que te ilusiones: es UNA página sin backend.
+         No guarda formularios y no tiene rutas. Si necesitás eso, es una
+         app y la hospedás vos.
+
+1.2 ¿Lo va a usar gente que nunca abre Claude Code, desde tu web o tu
+    producto?
+    SÍ → App con el Agent SDK, en Python o TypeScript.
+
+1.3 ¿Tiene que correr con tu computadora apagada? Cada noche, cada lunes.
+    SÍ → Rutina en la nube, con /schedule. Corre sobre un clon limpio, así
+         que no ve tus skills personales: eso viaja en el repo o en un plugin.
+    NO → seguí al Paso 2.
+```
+
+Si alguna dio sí, el detalle está en `references/afuera-de-la-sesion.md`.
+
+## Paso 2 · Qué pieza
+
+Cuatro preguntas. La primera que da sí fija la pieza.
+
+```
+2.1 ¿Tiene que pasar SIEMPRE, sin que el modelo decida?
+    Formatear después de cada edición. Frenar un comando peligroso.
+    SÍ → Hook. Una instrucción escrita es un pedido; el hook es la única
+         forma de garantizarlo.
+
+2.2 ¿Necesita entrar a un sistema de afuera con su propia credencial?
+    SÍ → Servidor MCP. Si además hay criterio que aplicar sobre lo que
+         trae, arriba va una skill: son dos piezas, y el MCP va primero.
+         Si el sistema de afuera tiene que EMPUJAR el evento hacia adentro
+         de una sesión abierta, eso es un canal.
+
+2.3 ¿Es un trabajador reusable, con herramientas recortadas, al que vas a
+    llamar por su nombre desde varios lugares?
+    SÍ → Subagente propio, en agents/nombre.md.
+         Dato que decide muchos casos: un subagente no te puede preguntar
+         nada a mitad de camino.
+
+2.4 Lo que queda es una SKILL. Falta el modo, que está acá abajo.
+```
+
+## Los cuatro modos de una skill
+
+Acá está el cambio que más desactualiza al material viejo: **el comando y el
+subagente dejaron de ser piezas aparte y pasaron a ser campos del frontmatter.**
+
+Un archivo en `.claude/commands/deploy.md` y una skill en
+`.claude/skills/deploy/SKILL.md` producen los dos el mismo `/deploy`. Y el
+aislamiento de contexto, que antes obligaba a escribir un subagente, ahora es una
+línea.
+
+| | La disparás vos | La dispara el modelo | Las dos |
+|---|---|---|---|
+| **Corre en tu conversación** | `disable-model-invocation: true` | `user-invocable: false` | el default |
+| **Corre aparte** | `disable-model-invocation` + `context: fork` | `context: fork` | `context: fork` |
+
+- **`disable-model-invocation: true`** es lo que antes era un comando. Va para
+  cosas con consecuencias: desplegar, commitear, mandar mensajes. Regalo extra:
+  no ocupa contexto hasta que la invocás.
+- **`user-invocable: false`** es conocimiento de fondo. Claude debería saberlo
+  cuando el tema aparece, pero no es nada que alguien quiera tipear.
+- **`context: fork`** corre la skill en un subagente. Solo sirve si la skill trae
+  una tarea; si es solo conocimiento, el subagente vuelve con las manos vacías.
+
+El detalle, y el precio de usar campos que no están en el estándar, en
+`references/modos-de-skill.md`.
+
+## Paso 3 · ¿Se empaqueta?
+
+Esto se contesta siempre, al final, después de saber qué pieza es.
+
+```
+3.1 ¿Te salieron dos o más piezas que se instalan juntas o no sirven?
+    ¿O lo mismo tiene que andar en otro repo, o en la máquina de otra
+    persona?
+    SÍ → Plugin. Y si además vas a repartir varios, arriba va un
+         marketplace: un marketplace.json en un repo de git.
+    NO → Dejalo suelto en .claude/. Un plugin de una sola pieza que usás
+         solo vos es un manifiesto de más.
+```
 
 ## Qué carga contexto y qué no
 
-No las seis cuestan igual, y esa diferencia es la que más se ignora al elegir.
+Casi todas las piezas pueden hacer casi lo mismo. Lo que las separa es qué te
+cobran y cuándo.
 
-La skill se carga en capas: el nombre y la descripción viven en cada
-conversación aunque nadie la use, el cuerpo entra recién cuando dispara, y
-`references/` o `assets/` solo si el trabajo los pide. El comando funciona
-igual, pero nadie paga nada hasta que alguien escribe su nombre. El subagente no
-cuesta nada hasta que se invoca, y cuando corre, lo hace en un contexto propio:
-al hilo principal solo vuelve el resumen final. El servidor MCP es el que menos
-se puede recortar: en cuanto se conecta, las herramientas que expone quedan
-disponibles para el resto de la sesión, se usen o no. El hook no le cuesta nada
-al modelo porque el modelo no lo lee: lo ejecuta el sistema cuando el evento
-ocurre. El plugin no agrega costo propio; el costo es la suma de lo que traen
-sus piezas.
+| Pieza | En el turno cero | Después |
+|---|---|---|
+| `CLAUDE.md` | Entero, siempre | — |
+| `.claude/rules/` con `paths:` | Nada | Cuando Claude toca esos archivos |
+| Skill | Una línea de descripción | El cuerpo al disparar, y ahí se queda |
+| Skill con `disable-model-invocation` | Nada | Todo, al invocarla vos |
+| Servidor MCP | Los nombres de las herramientas | El esquema, cuando se usa |
+| Subagente | Nada tuyo | Corre en su ventana y devuelve el resumen |
+| Hook | Nada | Solo lo que imprima |
 
-`TODO(humano) S03`: esta sección describe el comportamiento documentado en el
-momento de escribirla. Claude Code cambia de versión en versión y el detalle
-fino puede correrse. Ver `SUPUESTOS.md`.
+Dos cosas que casi nadie sabe. **Una skill que cargó se queda cargada** el resto
+de la sesión, así que un `SKILL.md` con seis casos adentro te cobra los seis
+aunque hoy uses uno. Y **la búsqueda de herramientas difiere los esquemas de
+MCP**, así que el viejo consejo de no instalar servidores porque comen contexto
+hoy se dice distinto: lo que empeora con cuarenta herramientas no es el gasto,
+es la elección.
 
-## El árbol de decisión
-
-Siete preguntas, en orden. La primera que da «sí» —salvo la última— cierra la
-decisión.
-
-```
-1. ¿Corre sola, sin que nadie la dispare a mano, y al final entrega algo?
-   Sí → no es ninguna de las seis piezas de acá: es un agente completo,
-        con su propio disparo y su propia entrega.
-   No → seguí.
-
-2. ¿Necesita hablar con un sistema externo con su propia credencial
-   (una API, una base, un servicio de terceros)?
-   Sí → servidor MCP.
-   No → seguí.
-
-3. ¿La persona la dispara a mano, escribiendo su nombre?
-   Sí → comando.
-   No → seguí.
-
-4. ¿Necesita su propio contexto aislado, para no llenar la conversación
-   principal con pasos intermedios largos?
-   Sí → subagente.
-   No → seguí.
-
-5. ¿Tiene que correr sola, disparada por un evento del propio Claude Code,
-   sin pasar por el criterio del modelo?
-   Sí → hook.
-   No → seguí.
-
-6. Lo que queda: el modelo tiene que saber hacer esto cuando el tema
-   aparece, sin que nadie la dispare a mano y sin tocar nada externo.
-   → skill.
-
-7. ¿La respuesta juntó dos o tres piezas que siempre viajan juntas?
-   Sí → empaquetalas en un plugin.
-   No → la pieza sola alcanza.
-```
-
-Una copia de una página, para imprimir o pegar en un canal, está en
-[assets/arbol-de-decision.md](assets/arbol-de-decision.md).
-
-## Plugin o skill suelta
-
-Un plugin aporta cuando dos o más piezas siempre viajan juntas: una skill que
-necesita un comando propio, o un hook que solo tiene sentido si la skill que lo
-acompaña también está instalada. El manifiesto las instala y las desinstala
-como una unidad.
-
-Una skill suelta alcanza cuando es una sola pieza de conocimiento sin
-compañeras. Empaquetarla en un plugin de una sola skill no suma nada: agrega un
-manifiesto para envolver algo que ya funcionaba solo.
-
-Si dudás entre las dos, o querés ver el anti-patrón del plugin de una sola
-pieza con más detalle, leé
-[references/plugin-vs-skill.md](references/plugin-vs-skill.md).
-
-## MCP o skill
-
-La señal más confiable es la credencial. Si al escribir la skill aparece un
-token, una clave o un usuario y contraseña, la decisión ya está tomada: eso es
-un servidor MCP, con una skill de criterio arriba si hace falta decidir algo
-antes de llamarlo.
-
-Una skill no necesita saber nada del mundo externo: necesita saber qué hacer
-con lo que ya tiene. Un MCP existe porque hay algo afuera —una base, un
-servicio, una cuenta— que solo se puede tocar con su propia autenticación.
-
-El detalle, con ejemplos de una skill que en realidad escondía un MCP, está en
-[references/mcp-vs-skill.md](references/mcp-vs-skill.md). Leelo cuando la
-skill que estás armando empiece a pedir una variable de entorno.
-
-## Subagente o comando
-
-Los dos se disparan explícitamente, pero por lados distintos. El comando lo
-dispara la persona, escribiendo su nombre, y corre en la misma conversación:
-comparte el contexto con quien lo llamó. El subagente lo dispara el hilo
-principal cuando decide delegar un trabajo largo, y corre aparte: al terminar,
-solo vuelve el informe, no los pasos que lo produjeron.
-
-La pregunta que decide: si los pasos intermedios ensucian la conversación y
-nadie necesita verlos, es subagente. Si el valor está en que la persona controle
-cuándo corre, es comando.
-
-Ejemplos de los dos casos, con el motivo de cada elección, están en
-[references/subagente-vs-comando.md](references/subagente-vs-comando.md).
-
-## El orden de carga, a grandes rasgos
-
-Al arrancar una sesión, lo primero que entra es el archivo de instrucciones del
-proyecto. Después, el nombre y la descripción de cada skill instalada —el nivel
-más liviano de la revelación progresiva—. Los servidores MCP se conectan y
-registran sus herramientas, y ese costo queda fijo para toda la sesión, se usen
-o no. Los subagentes y los comandos quedan indexados por nombre, pero su
-contenido no entra hasta que alguien los invoca. Los hooks se registran contra
-sus eventos y no ocupan contexto en ningún momento: corren, no se leen.
-
-El orden exacto y qué tan temprano se conecta cada MCP dependen de la versión de
-Claude Code. `TODO(humano) S01`: esta sección da el orden general, no el
-verificado contra una build puntual. El detalle y las fuentes están en
-[references/orden-de-carga.md](references/orden-de-carga.md).
+Está desarrollado en `references/como-se-carga-el-contexto.md`.
 
 ## Los anti-patrones más comunes
 
-| Anti-patrón | Por qué falla | Qué hacer en su lugar |
-|---|---|---|
-| Una skill que pide una API key | Esconde un MCP con un instructivo encima | Partir en dos: servidor MCP más skill de criterio |
-| Un comando para algo que se repite solo, sin que nadie lo tipee | Nadie va a acordarse de escribirlo cada vez | Hook, si el disparo es un evento; skill, si el disparo es un tema de conversación |
-| Un plugin con una sola skill adentro | El manifiesto no suma nada sobre la skill sola | Dejar la skill suelta hasta que aparezca una segunda pieza |
-| Un subagente para una decisión de una frase | El costo de aislar contexto no se paga con un solo paso | Resolverlo en el cuerpo de la skill que lo dispara |
-| Un hook que decide con criterio, no con una regla fija | El hook no pasa por el modelo: si necesita juicio, va a fallar en silencio | Skill, si hace falta criterio; hook, solo para lo que siempre se resuelve igual |
-| Un SKILL.md de 3000 palabras que explica seis casos distintos | Se carga entero cada vez que dispara, aunque el caso de hoy sea uno solo | Cuerpo con el procedimiento general y un archivo en `references/` por caso |
+| Anti-patrón | Qué hacer en su lugar |
+|---|---|
+| Un comando de barra para algo nuevo | Skill con `disable-model-invocation` |
+| Un subagente aparte solo para aislar contexto | `context: fork` en la skill que ya tenías |
+| Un MCP con cuarenta herramientas por las dudas | Las operaciones que alguien pidió |
+| Una skill que pide una clave de API | MCP abajo, skill de criterio arriba |
+| Un plugin con una sola skill que usás solo vos | Dejala suelta |
+| Un hook que decide con criterio | Hook para la regla fija, skill para el juicio |
+| Una regla importante escrita en el `CLAUDE.md` | Si tiene que valer siempre, es un hook |
+| Un `CLAUDE.md` de ochocientas líneas | Lo que aplica a veces va en skills |
+| Un `SKILL.md` de tres mil palabras con seis casos | Cuerpo corto y un archivo por caso |
+| `context: fork` en una skill que solo sabe cosas | El default, o `user-invocable: false` |
+| Pedir un artefacto esperando una app | Si guarda datos, la hospedás vos |
 
-Cada fila con su ejemplo de antes y después está en
-[references/anti-patrones.md](references/anti-patrones.md). Leelo cuando ya
-identificaste el anti-patrón y quieras el ejemplo concreto de cómo se corrige.
-
-## Cómo se arma la recomendación y el esqueleto
-
-El procedimiento es el mismo siempre: correr las siete preguntas del árbol de
-decisión contra el caso que trajiste, en orden, sin saltear ninguna. La primera
-que contesta «sí» fija la pieza, salvo la última, que decide si además hace
-falta un plugin alrededor.
-
-Si el caso no da para contestar alguna pregunta con lo que dijiste, la
-respuesta pide lo que falta: quién o qué la dispara, si toca algo externo, y
-qué se entrega al final. Son las tres preguntas que más rinden, y con eso casi
-siempre alcanza para completar el árbol.
-
-Una vez que la pieza está decidida, el paso siguiente es copiar su esqueleto
-desde `assets/` y completarlo con el caso concreto. Cada archivo de esqueleto
-trae la estructura de carpetas y los campos mínimos del frontmatter o el JSON
-que le corresponde, con marcadores entre llaves dobles donde va lo específico
-del caso.
-
-`TODO(humano) S02`: la ficha no especifica si el esqueleto tiene que ser un
-árbol para copiar a mano —lo que hay en `assets/`— o un generador que arme los
-archivos solo. Se eligió lo primero, porque no inventa una herramienta que la
-ficha no pidió. Ver `SUPUESTOS.md`.
-
-Si la pieza recomendada es una skill, el esqueleto de acá alcanza para
-arrancar, pero construirla entera —con descripción que dispara, evals y
-verificación— es otro trabajo. Eso lo hace `skill-smith`, no esta skill.
+Los once con el antes y el después están en `references/anti-patrones.md`.
 
 ## Qué entregás
 
-Tres cosas, siempre las tres:
-
 ```
-1. La pieza recomendada (skill, plugin, subagente, comando, MCP o hook),
-   con el motivo en una frase.
-2. El árbol de archivos de esa pieza, copiado desde assets/ y ya
-   nombrado con el caso concreto.
+1. La pieza recomendada, una sola, con el motivo en una frase y el número
+   de la pregunta que la decidió. Si es una skill, también el modo.
+2. El árbol de archivos de esa pieza, copiado del assets/ que corresponde
+   y ya nombrado con el caso concreto.
 3. Si el caso reparte en dos piezas, cuál se construye primero y por qué.
+4. Lo que NO hace falta construir. Si alguien vino a pedir un plugin y se
+   va con una línea en CLAUDE.md, eso se dice.
 ```
-
-La tercera no es un adorno: la mitad de los casos reales no resuelven en una
-sola pieza, y construir en el orden equivocado deja la primera pieza sin nada
-que la sostenga.
 
 ## Material de apoyo
 
-- `references/plugin-vs-skill.md` — leelo cuando dudes si empaquetar en un
-  plugin o dejar la skill suelta.
-- `references/mcp-vs-skill.md` — leelo cuando la skill que estás pensando
-  empiece a pedir una credencial.
-- `references/subagente-vs-comando.md` — leelo cuando dudes entre delegar en
-  un subagente o dejarlo como comando.
-- `references/orden-de-carga.md` — leelo cuando necesites el detalle del
-  orden de carga, no solo el resumen.
-- `references/anti-patrones.md` — leelo cuando ya viste el anti-patrón en la
-  tabla y querés el ejemplo de antes y después.
-- `assets/arbol-de-decision.md` — copialo entero si querés la versión de una
-  página para imprimir o pegar en un canal.
-- `assets/esqueleto-skill.md`, `assets/esqueleto-plugin.md`,
-  `assets/esqueleto-subagente.md`, `assets/esqueleto-comando.md`,
-  `assets/esqueleto-mcp.md`, `assets/esqueleto-hook.md` — copiá el que
-  corresponda a la pieza recomendada y completalo. No hace falta leer los
-  otros cinco.
+Leé el que corresponda al caso, no todos.
+
+| Archivo | Cuándo |
+|---|---|
+| `references/como-se-carga-el-contexto.md` | Hay que comparar el costo de dos formas |
+| `references/modos-de-skill.md` | La respuesta fue skill y falta el modo |
+| `references/mcp-o-skill.md` | La skill que pensabas empezó a pedir una credencial |
+| `references/afuera-de-la-sesion.md` | El Paso 1 dio sí |
+| `references/anti-patrones.md` | Querés el antes y el después de un caso |
+| `assets/arbol-de-decision.md` | El árbol entero en una página, para copiar |
+| `assets/esqueleto-skill.md` | La respuesta fue skill o estilo de salida |
+| `assets/esqueleto-subagente.md` | La respuesta fue subagente |
+| `assets/esqueleto-hook.md` | La respuesta fue hook |
+| `assets/esqueleto-mcp.md` | La respuesta fue servidor MCP o canal |
+| `assets/esqueleto-plugin.md` | Hay que empaquetar, o repartir |
+| `assets/esqueleto-artefacto.md` | La respuesta fue artefacto |
+| `assets/esqueleto-app-sdk.md` | La respuesta fue app con el SDK |
+| `assets/esqueleto-rutina.md` | Tiene que correr solo, cada tanto |
 
 ## Lo que esto no hace
 
-No escribe la skill, el plugin o el subagente completos. Entrega el esqueleto
-y la recomendación; completarlo con el criterio real de tu caso es tu trabajo,
-o el de otra forja si la pieza es una skill.
+No escribe la pieza entera. Entrega la recomendación y el esqueleto. Si la pieza
+elegida es una skill, la escribe `skill-smith`.
 
-No reemplaza la documentación oficial de Claude Code. Esta guía da un punto de
-partida rápido; si el detalle técnico de una versión puntual importa para tu
-caso, verificalo contra la documentación vigente, no solo contra esto.
+No reemplaza la documentación oficial, que cambia seguido. Esta guía se escribió
+contra la documentación de agosto de 2026 y conviene verificar contra la de hoy
+lo que vayas a apoyar en un número.
 
-No decide si conviene automatizar algo. Esa es una pregunta anterior a ésta:
-acá se asume que ya se decidió construir algo y falta elegir la forma.
+No decide si conviene automatizar algo. Esa pregunta es anterior: acá se asume
+que ya decidiste construir, y falta la forma.

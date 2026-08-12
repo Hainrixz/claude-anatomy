@@ -1,6 +1,6 @@
 {
   "name": "claude-anatomy",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Enseña a decidir si algo debe ser skill, plugin, subagente, comando, MCP o hook, con la regla de decisión y ejemplos.",
   "author": {
     "name": "Hainrixz",

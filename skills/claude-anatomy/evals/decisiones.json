@@ -1,0 +1,156 @@
+{
+  "skill_name": "claude-anatomy",
+  "tipo": "decision",
+  "nota": "Un set de disparo mide si la skill se activa. No distingue un árbol correcto de uno que contesta «subagente» a todo. Estos 12 casos miden la RESPUESTA: una pieza por rama, y las que no hay que construir.",
+  "umbral": "10 de 12. Un caso que recomienda una pieza de más cuenta como error aunque la pieza nombrada sea razonable.",
+  "casos": [
+    {
+      "id": "D01",
+      "caso": "Quiero que Claude siempre use pnpm en este repo y que corra los tests antes de commitear.",
+      "esperado": {
+        "paso": "0.1",
+        "pieza": "claude-md",
+        "esqueleto": null,
+        "no_construir": ["skill", "hook", "plugin"],
+        "segunda_pieza": null,
+        "nota": "El pedido tiene dos mitades y solo una es CLAUDE.md. «Correr los tests antes de commitear» es una garantía, así que si la persona insiste en que valga siempre, esa mitad es un hook. Se acepta la respuesta que separa las dos."
+      }
+    },
+    {
+      "id": "D02",
+      "caso": "Necesito que nadie, ni Claude, pueda editar el archivo .env de este proyecto. Nunca.",
+      "esperado": {
+        "paso": "2.1",
+        "pieza": "hook",
+        "esqueleto": "assets/esqueleto-hook.md",
+        "no_construir": ["claude-md", "skill"],
+        "segunda_pieza": null,
+        "nota": "La palabra «nunca» es la señal. Una instrucción escrita es un pedido; el hook es la garantía."
+      }
+    },
+    {
+      "id": "D03",
+      "caso": "Tengo un checklist de deploy de doce pasos que pego a mano cada vez. No quiero que Claude lo dispare solo por las dudas.",
+      "esperado": {
+        "paso": "2.4",
+        "pieza": "skill",
+        "modo": "disable-model-invocation: true",
+        "esqueleto": "assets/esqueleto-skill.md",
+        "no_construir": ["comando", "subagente"],
+        "segunda_pieza": null,
+        "nota": "No vale recomendar un comando de barra. Es el anti-patrón 1."
+      }
+    },
+    {
+      "id": "D04",
+      "caso": "Quiero revisar cuarenta archivos buscando problemas de seguridad y que me traiga solo los hallazgos, sin llenarme la conversación con el contenido de los archivos.",
+      "esperado": {
+        "paso": "2.4",
+        "pieza": "skill",
+        "modo": "context: fork",
+        "esqueleto": "assets/esqueleto-skill.md",
+        "no_construir": ["subagente"],
+        "segunda_pieza": null,
+        "nota": "Este es el caso de regresión de toda la versión 0.2.0. La respuesta vieja era «subagente» y hoy está mal: aislar contexto es un campo del frontmatter, no un archivo aparte."
+      }
+    },
+    {
+      "id": "D05",
+      "caso": "Necesito un revisor de código con acceso de solo lectura, con instrucciones propias, al que llamen por su nombre tres skills distintas y también yo.",
+      "esperado": {
+        "paso": "2.3",
+        "pieza": "subagente",
+        "esqueleto": "assets/esqueleto-subagente.md",
+        "no_construir": [],
+        "segunda_pieza": null,
+        "nota": "Acá sí es un subagente propio: reusable, con herramientas recortadas, llamado por nombre desde varios lugares. Es el contraste de D04."
+      }
+    },
+    {
+      "id": "D06",
+      "caso": "Quiero que Claude lea los tickets de nuestro sistema interno, que tiene API con token, y que me diga cuáles atender primero.",
+      "esperado": {
+        "paso": "2.2",
+        "pieza": "mcp",
+        "esqueleto": "assets/esqueleto-mcp.md",
+        "no_construir": [],
+        "segunda_pieza": "skill",
+        "orden": "el MCP primero: la skill sin él no tiene qué llamar",
+        "nota": "Reparte en dos. Fallar acá es devolver una sola pieza."
+      }
+    },
+    {
+      "id": "D07",
+      "caso": "Hay un sistema de facturación viejo que nadie entiende. Quiero que Claude sepa cómo funciona cuando el tema aparezca, pero no es nada que yo vaya a invocar.",
+      "esperado": {
+        "paso": "2.4",
+        "pieza": "skill",
+        "modo": "user-invocable: false",
+        "esqueleto": "assets/esqueleto-skill.md",
+        "no_construir": ["claude-md"],
+        "segunda_pieza": null,
+        "nota": "No vale meterlo en el CLAUDE.md: entraría entero en cada sesión aunque el tema no aparezca nunca."
+      }
+    },
+    {
+      "id": "D08",
+      "caso": "Quiero un tablero con los deploys que fallaron esta semana, por servicio, para compartirlo con el equipo por link.",
+      "esperado": {
+        "paso": "1.1",
+        "pieza": "artefacto",
+        "esqueleto": "assets/esqueleto-artefacto.md",
+        "no_construir": ["app"],
+        "segunda_pieza": null,
+        "nota": "Mirar y compartir, sin guardar nada. Entra justo adentro de los límites."
+      }
+    },
+    {
+      "id": "D09",
+      "caso": "Queremos meter esto adentro del producto de la empresa, para que lo usen clientes que no tienen Claude Code.",
+      "esperado": {
+        "paso": "1.2",
+        "pieza": "app-sdk",
+        "esqueleto": "assets/esqueleto-app-sdk.md",
+        "no_construir": ["artefacto"],
+        "segunda_pieza": null,
+        "nota": "Tiene que decir que se paga con clave de API y que los permisos los define el código."
+      }
+    },
+    {
+      "id": "D10",
+      "caso": "Quiero un resumen de los PR abiertos todos los lunes a la mañana, y los lunes yo no prendo la computadora hasta las once.",
+      "esperado": {
+        "paso": "1.3",
+        "pieza": "rutina",
+        "esqueleto": "assets/esqueleto-rutina.md",
+        "no_construir": ["loop", "tarea-de-escritorio"],
+        "segunda_pieza": null,
+        "nota": "Tiene que advertir que la rutina no ve las skills personales."
+      }
+    },
+    {
+      "id": "D11",
+      "caso": "Tengo una skill de revisión y un hook que la fuerza antes de cada commit, y los quiero usar en tres repos distintos y pasárselos a dos compañeros.",
+      "esperado": {
+        "paso": "3.1",
+        "pieza": "plugin",
+        "esqueleto": "assets/esqueleto-plugin.md",
+        "no_construir": [],
+        "segunda_pieza": "marketplace",
+        "nota": "Dos piezas que viajan juntas más otra máquina. Y como se reparte, encima va el marketplace."
+      }
+    },
+    {
+      "id": "D12",
+      "caso": "Quiero armar un servidor MCP para que Claude pueda leer archivos PDF.",
+      "esperado": {
+        "paso": "0.2",
+        "pieza": null,
+        "esqueleto": null,
+        "no_construir": ["mcp"],
+        "segunda_pieza": null,
+        "nota": "El Paso 0 tiene que atajarlo. Claude ya lee PDF, y no hay ninguna credencial de por medio. La respuesta correcta es que no hay nada que construir."
+      }
+    }
+  ]
+}
