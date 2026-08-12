@@ -1,13 +1,21 @@
 <p align="center">
-  <img src="https://github.com/Hainrixz/claude-anatomy/releases/download/assets/portada.png" width="880"
-       alt="Nueve fichas de cerámica de formas distintas sobre una mesa de madera oscura. Una está dada vuelta y le pega la luz; las otras ocho quedan en sombra.">
+  <img src="https://github.com/Hainrixz/claude-anatomy/releases/download/assets/hero.png" width="880"
+       alt="Anatomía de Claude Code. ¿Skill, subagente, hook, MCP, plugin, una página web, una app… o nada? Diez formas posibles y una sola correcta.">
 </p>
 
-# Anatomía de Claude Code
+<p align="center">
+  <a href="https://github.com/Hainrixz/claude-anatomy/releases/latest"><img alt="Versión" src="https://img.shields.io/github/v/release/Hainrixz/claude-anatomy?label=versi%C3%B3n&color=E1693F&labelColor=1A0F0B"></a>
+  <a href="LICENSE"><img alt="Licencia MIT" src="https://img.shields.io/badge/licencia-MIT-E1693F?labelColor=1A0F0B"></a>
+  <img alt="Claude Code 2.0 o mayor" src="https://img.shields.io/badge/Claude%20Code-%E2%89%A5%202.0-E1693F?labelColor=1A0F0B">
+  <img alt="Español" src="https://img.shields.io/badge/idioma-espa%C3%B1ol-E1693F?labelColor=1A0F0B">
+</p>
 
-Te dice qué tenés que construir en Claude Code —una skill, un subagente, un
-hook, un servidor MCP, un plugin, una rutina, una página web, una app, o nada— y
-te da el esqueleto de archivos de la pieza que salió.
+<h1 align="center">Anatomía de Claude Code</h1>
+
+<p align="center">
+  Te dice qué construir en Claude Code —una skill, un subagente, un hook, un servidor MCP,<br>
+  un plugin, una rutina, una página web, una app, o nada— y te da el esqueleto de archivos.
+</p>
 
 ## El problema
 
@@ -23,15 +31,13 @@ el modelo elige mal seguido, y nadie se acuerda de por qué esa carpeta está ah
 
 ## Qué hace
 
-Corre cuatro pasos sobre el caso que trajiste y devuelve **una** pieza, con el
-motivo en una frase y el árbol de archivos listo para completar.
+Corre cuatro pasos sobre tu caso y devuelve **una** pieza, con el motivo en una
+frase y el árbol de archivos listo para completar.
 
 Y hace algo que casi ninguna guía hace: empieza preguntando si hace falta
-construir algo. Buena parte de los casos que llegan se resuelven con una línea en
-el `CLAUDE.md`, instalando algo que ya existe, o con un script de veinte líneas.
+construir algo. Buena parte de los casos se resuelven con una línea en el
+`CLAUDE.md`, instalando algo que ya existe, o con un script de veinte líneas.
 Cuando la respuesta es esa, lo dice.
-
-Se ve así:
 
 ```
 vos  › quiero revisar cuarenta archivos buscando problemas de seguridad
@@ -48,6 +54,69 @@ skill › Paso 2, pregunta 2.4 → es una SKILL, con `context: fork`.
           SKILL.md
           references/
 ```
+
+## Instalación
+
+<table>
+<tr><td width="33%" valign="top">
+
+**Como plugin**
+
+Nada que descargar.
+
+```
+/plugin marketplace add Hainrixz/claude-anatomy
+/plugin install claude-anatomy@claude-anatomy
+```
+
+</td><td width="33%" valign="top">
+
+**Desde el Release**
+
+El `.zip` trae la skill entera.
+
+```bash
+mkdir -p .claude/skills
+unzip claude-anatomy-skill-*.zip \
+  -d .claude/skills/
+```
+
+[Descargar la última versión](https://github.com/Hainrixz/claude-anatomy/releases/latest)
+
+</td><td width="33%" valign="top">
+
+**Clonando el repo**
+
+```bash
+git clone https://github.com/Hainrixz/claude-anatomy
+cd claude-anatomy
+mkdir -p .claude/skills
+cp -R skills/claude-anatomy \
+  .claude/skills/
+```
+
+</td></tr>
+</table>
+
+Para tenerla en todos tus proyectos, copiala a la carpeta de skills de tu
+configuración de usuario en vez de a la del proyecto. La ruta de proyecto es
+reversible y la de usuario no: por eso el default es proyecto.
+
+> La carpeta tiene que llamarse igual que el `name` del frontmatter. Si la
+> renombrás, la skill no carga.
+
+## Cómo se usa
+
+Se activa sola. Escribí lo que escribirías igual:
+
+- «esto lo hago como skill o como agente?»
+- «necesito un MCP o alcanza con una skill»
+- «esto va como slash command o como skill?»
+- «quiero que esto salga como una pantalla que le pueda mandar a alguien»
+- «quiero meter esto adentro de mi app»
+- «por dónde empiezo»
+
+También dispara en inglés, con «should I build this as a skill or an agent».
 
 ## El árbol de decisión
 
@@ -95,7 +164,9 @@ flowchart TD
 ```
 
 <details>
-<summary>El árbol completo en texto, para copiar o para leer con lector de pantalla</summary>
+<summary><b>El árbol completo en texto</b> — para copiar, o para leer con lector de pantalla</summary>
+
+<br>
 
 ```
 PASO 0 · ¿HACE FALTA CONSTRUIR ALGO?
@@ -159,42 +230,6 @@ herramientas los difiere, así que lo que empeora con cuarenta herramientas no e
 el gasto: es que el modelo elige peor entre cuarenta nombres parecidos que entre
 seis.
 
-## Cómo se instala
-
-Como plugin, con dos comandos adentro de Claude Code:
-
-```
-/plugin marketplace add Hainrixz/claude-anatomy
-/plugin install claude-anatomy@claude-anatomy
-```
-
-O clonando el repo y copiando la carpeta al proyecto:
-
-```bash
-mkdir -p .claude/skills
-cp -R skills/claude-anatomy .claude/skills/
-```
-
-Para tenerla en todos tus proyectos, copiala a la carpeta de skills de tu
-configuración de usuario en vez de a la del proyecto. La ruta de proyecto es
-reversible y la de usuario no: por eso el default es proyecto.
-
-La carpeta se llama igual que el `name` del frontmatter. Si la renombrás, la
-skill no carga.
-
-## Cómo se usa
-
-Se invoca sola. Escribí lo que escribirías igual:
-
-- «esto lo hago como skill o como agente?»
-- «necesito un MCP o alcanza con una skill»
-- «esto va como slash command o como skill?»
-- «quiero que esto salga como una pantalla que le pueda mandar a alguien»
-- «quiero meter esto adentro de mi app»
-- «por dónde empiezo»
-
-También dispara en inglés, con «should I build this as a skill or an agent».
-
 ## Los anti-patrones más comunes
 
 | Anti-patrón | Qué hacer en su lugar |
@@ -209,7 +244,26 @@ También dispara en inglés, con «should I build this as a skill or an agent».
 | Pedir un artefacto esperando una app | Si guarda datos, la hospedás vos |
 
 Los once, con el antes y el después de cada uno, están en
-`skills/claude-anatomy/references/anti-patrones.md`.
+[`references/anti-patrones.md`](skills/claude-anatomy/references/anti-patrones.md).
+
+## Qué hay adentro
+
+```
+skills/claude-anatomy/
+├── SKILL.md                          el árbol y el contrato de salida
+├── references/                       se leen solo si hacen falta
+│   ├── como-se-carga-el-contexto.md  qué entra en el turno cero, y qué no
+│   ├── modos-de-skill.md             los cuatro modos y el frontmatter entero
+│   ├── mcp-o-skill.md                la señal de la credencial
+│   ├── afuera-de-la-sesion.md        artefacto, app con el SDK, rutina, workflow
+│   └── anti-patrones.md              los once, con antes y después
+├── assets/                           se copian, no se leen
+│   ├── arbol-de-decision.md          el árbol entero en una página
+│   └── esqueleto-*.md                nueve esqueletos, uno por pieza
+└── evals/
+    ├── evals.json                    20 pruebas de disparo
+    └── decisiones.json               12 pruebas de decisión
+```
 
 ## Lo que NO hace y por qué
 
@@ -218,8 +272,9 @@ es otro trabajo, o el de `skill-smith` si la pieza elegida es una skill.
 
 No reemplaza la documentación oficial, que cambia seguido. Esta versión se
 escribió contra la documentación de agosto de 2026 y verificó contra ella cada
-afirmación sobre orden de carga, costo de contexto y campos del frontmatter. Lo
-que vayas a apoyar en un número, verificalo contra la de hoy.
+afirmación sobre orden de carga, costo de contexto, campos del frontmatter,
+eventos de hook y límites de un artefacto. Lo que vayas a apoyar en un número,
+verificalo contra la de hoy.
 
 No decide si conviene automatizar algo. Esa pregunta es anterior a ésta: acá se
 asume que ya decidiste construir, y falta elegir la forma.
@@ -233,22 +288,23 @@ comentario ni el usuario de nadie.
 ## Cómo se verificó
 
 La compuerta `validar_artefacto.py` corrió sobre esta versión y dio `pass`, con
-cero errores. Revisa el frontmatter, los límites de la descripción, que todos los
-enlaces relativos resuelvan, que no viaje ninguna credencial ni ninguna ruta de
-la máquina del autor, y que las citas resuelvan contra el corpus.
+cero errores y cero avisos. Revisa el frontmatter, los límites de la descripción,
+que todos los enlaces relativos resuelvan, que no viaje ninguna credencial ni
+ninguna ruta de la máquina del autor, y que las citas resuelvan contra el corpus.
 
-Hay dos sets de pruebas adentro de `skills/claude-anatomy/evals/`:
+Hay dos sets de pruebas en [`evals/`](skills/claude-anatomy/evals):
 
-- `evals.json` — 20 casos de disparo: 10 que tienen que activar la skill y 10
-  que no.
-- `decisiones.json` — 12 casos que miden si la recomendación es la correcta, no
-  solo si la skill se activó.
+| Archivo | Qué mide | Casos | Estado |
+|---|---|---|---|
+| `evals.json` | Si la skill se activa cuando corresponde | 10 + 10 | Escrito, sin ejecutar |
+| `decisiones.json` | Si la recomendación es la correcta | 12 | Escrito, sin ejecutar |
 
-Los dos están escritos y **no ejecutados**. Es la diferencia entre una compuerta
-que corrió y una prueba que no: lo primero está verificado, lo segundo no.
+Están escritos y **no ejecutados**. Es la diferencia entre una compuerta que
+corrió y una prueba que no: lo primero está verificado, lo segundo no.
 
 ## Licencia
 
-MIT.
+MIT — ver [LICENSE](LICENSE).
 
-Este es un proyecto de la comunidad. **No afiliado a Anthropic.**
+Proyecto de la comunidad, construido con [la forja](https://github.com/Hainrixz/la-forja).
+**No afiliado a Anthropic.**

@@ -3,7 +3,7 @@ name: claude-anatomy
 description: "ES: Te dice qué tenés que construir en Claude Code y te da el esqueleto de archivos: skill y en qué modo, subagente, hook, servidor MCP, plugin, marketplace, rutina programada, artefacto (una página web), app con el Agent SDK, una línea en CLAUDE.md, o nada. Corré esto antes del primer archivo. Se dispara con «esto lo hago como skill o como agente», «necesito un MCP o alcanza con una skill», «va como subagente o como comando», «quiero una página web hecha con Claude», «quiero una app que use Claude adentro» o «por dónde empiezo». EN: Tells you what to build in Claude Code and hands you the file skeleton: skill and which invocation mode, subagent, hook, MCP server, plugin, marketplace, scheduled routine, artifact web page, Agent SDK app, a CLAUDE.md line, or nothing at all. Triggers on «skill or agent», «do I need an MCP or is a skill enough», «should this be a slash command», «I want a web page built with Claude», «I want an app with Claude inside», «where do I even start»."
 license: MIT
 metadata:
-  version: 0.2.2
+  version: 0.2.3
 ---
 
 # Anatomía de Claude Code
