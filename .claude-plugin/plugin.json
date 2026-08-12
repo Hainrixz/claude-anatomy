@@ -1,7 +1,7 @@
 {
   "name": "claude-anatomy",
-  "version": "0.2.0",
-  "description": "Enseña a decidir si algo debe ser skill, plugin, subagente, comando, MCP o hook, con la regla de decisión y ejemplos.",
+  "version": "0.2.1",
+  "description": "Te dice qué construir en Claude Code —skill, subagente, hook, servidor MCP, plugin, rutina, una página web, una app, o nada— con el árbol de decisión y el esqueleto de archivos de la pieza elegida.",
   "author": {
     "name": "Hainrixz",
     "url": "https://github.com/Hainrixz"
