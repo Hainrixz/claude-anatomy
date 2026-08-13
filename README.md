@@ -55,55 +55,95 @@ skill › Paso 2, pregunta 2.4 → es una SKILL, con `context: fork`.
           references/
 ```
 
+## Dónde funciona
+
+En los tres lados, con **el mismo archivo**: el `.zip` del Release.
+
+| Dónde | Cómo se instala | Cuánto tarda |
+|---|---|---|
+| **Claude Code** — terminal, VS Code, JetBrains, escritorio, web | Dos comandos, o el `.zip` | Un minuto |
+| **App de Claude** — chat en web, escritorio y celular | Subís el `.zip` en Customize | Un minuto |
+| **Cowork y sesiones en la nube** — incluidas las rutinas | Se habilita desde tu cuenta | Ya está, si la subiste al chat |
+
+Que ande fuera de Claude Code no es casualidad. Las skills siguen el estándar
+abierto [Agent Skills](https://agentskills.io), que admite seis campos en el
+frontmatter. Claude Code acepta bastantes más —`context: fork`,
+`disable-model-invocation`, `argument-hint`— pero cualquiera de ésos hace fallar
+la subida a claude.ai con un error duro, no lo ignora. Esta skill usa cuatro
+campos y los cuatro están en el estándar, y el cuerpo no tiene nada exclusivo de
+Claude Code: ni `$ARGUMENTS`, ni `${CLAUDE_SKILL_DIR}`, ni comandos embebidos.
+
 ## Instalación
 
-<table>
-<tr><td width="33%" valign="top">
+### En Claude Code
 
-**Como plugin**
-
-Nada que descargar.
+Como plugin, sin descargar nada:
 
 ```
 /plugin marketplace add Hainrixz/claude-anatomy
 /plugin install claude-anatomy@claude-anatomy
 ```
 
-</td><td width="33%" valign="top">
-
-**Desde el Release**
-
-El `.zip` trae la skill entera.
+O con el `.zip` del [último Release](https://github.com/Hainrixz/claude-anatomy/releases/latest):
 
 ```bash
 mkdir -p .claude/skills
-unzip claude-anatomy-skill-*.zip \
-  -d .claude/skills/
+unzip claude-anatomy-skill-*.zip -d .claude/skills/
 ```
 
-[Descargar la última versión](https://github.com/Hainrixz/claude-anatomy/releases/latest)
+Eso la deja en el proyecto. Para tenerla en todos, descomprimila en la carpeta
+de skills de tu configuración de usuario. La ruta de proyecto es reversible y la
+de usuario no: por eso el default es proyecto.
 
-</td><td width="33%" valign="top">
-
-**Clonando el repo**
+También podés clonar el repo y copiar la carpeta a mano:
 
 ```bash
 git clone https://github.com/Hainrixz/claude-anatomy
-cd claude-anatomy
-mkdir -p .claude/skills
-cp -R skills/claude-anatomy \
-  .claude/skills/
+cp -R claude-anatomy/skills/claude-anatomy .claude/skills/
 ```
 
-</td></tr>
-</table>
+### En la app de Claude
 
-Para tenerla en todos tus proyectos, copiala a la carpeta de skills de tu
-configuración de usuario en vez de a la del proyecto. La ruta de proyecto es
-reversible y la de usuario no: por eso el default es proyecto.
+Sirve el mismo `.zip`, sin tocar nada.
+
+1. Descargá `claude-anatomy-skill-*.zip` del [último Release](https://github.com/Hainrixz/claude-anatomy/releases/latest).
+2. En la app, andá a **Customize → Skills**.
+3. Tocá **+**, después **Crear skill**, y después **Subir una skill**.
+4. Elegí el `.zip`. Listo.
+
+Anda en los planes Free, Pro, Max, Team y Enterprise, siempre que tengas la
+ejecución de código habilitada.
+
+### En Cowork y en las sesiones en la nube
+
+No hay un paso aparte: **Cowork usa las skills habilitadas en tu cuenta de
+claude.ai**, así que con subirla al chat una vez ya la tenés en los dos. Se
+administran desde **Customize** en la barra lateral de la app de escritorio, o
+desde la configuración de skills en claude.ai. Se sincronizan al arrancar la
+sesión.
+
+> **La trampa que hace perder una tarde.** Cowork, las sesiones en la nube y las
+> rutinas **no leen la carpeta de skills de tu máquina**. Si la instalaste solo
+> ahí, una rutina que la invoque va a decir que la skill no existe, porque cada
+> corrida arranca como una sesión remota nueva. Para que la vean: habilitala en
+> tu cuenta de claude.ai, o —si es una sesión en la nube sobre un repo—
+> commiteala en el `.claude/skills/` de ese repo.
+>
+> Las tareas programadas del escritorio son la excepción: corren en tu máquina y
+> leen lo mismo que cualquier sesión local.
 
 > La carpeta tiene que llamarse igual que el `name` del frontmatter. Si la
 > renombrás, la skill no carga.
+
+### Qué cambia en cada lado
+
+En **Claude Code** te da la recomendación y el esqueleto de archivos, y seguís
+de largo construyendo ahí mismo.
+
+En la **app** y en **Cowork** te da la recomendación y el esqueleto como texto:
+te sirve para decidir y para entender, y después vas a Claude Code a
+construirlo. Sigue teniendo sentido, porque la duda —«¿esto es una skill o un
+agente?»— suele aparecer antes de abrir la terminal.
 
 ## Cómo se usa
 
