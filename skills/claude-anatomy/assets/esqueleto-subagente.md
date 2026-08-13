@@ -38,7 +38,7 @@ Devolvé {{la forma exacta de la salida}}.
 | `disallowedTools` | Las que se le sacan |
 | `model` | `sonnet`, `opus`, `haiku`, `fable`, un id completo, o `inherit` |
 | `color` | `red`, `blue`, `green`, `yellow`, `purple`, `orange`, `pink`, `cyan` |
-| `permissionMode` | `default`, `acceptEdits`, `auto`, `dontAsk`, `bypassPermissions`, `plan` |
+| `permissionMode` | `default`, `acceptEdits`, `auto`, `dontAsk`, `bypassPermissions`, `plan`, y `manual` como alias de `default` |
 | `maxTurns` | Cuántos turnos antes de frenar |
 | `skills` | Skills que se precargan enteras al arrancar |
 | `memory` | `user`, `project` o `local`, para que aprenda entre sesiones |
@@ -58,8 +58,8 @@ parte se queda en el hilo principal.
 prompt.
 
 **Corriendo en segundo plano tiene menos herramientas.** Y ese es el default. Si
-tu subagente necesita una herramienta que no está en el conjunto reducido,
-declaralo con `background: false`.
+tu subagente necesita una herramienta que no está en el conjunto reducido, pedile
+a Claude que lo corra en primer plano.
 
 ## Si el subagente viaja adentro de un plugin
 

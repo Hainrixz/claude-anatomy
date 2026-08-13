@@ -1,9 +1,9 @@
 ---
 name: claude-anatomy
-description: "ES: Te dice qué tenés que construir en Claude Code y te da el esqueleto de archivos: skill y en qué modo, subagente, hook, servidor MCP, plugin, marketplace, rutina programada, artefacto (una página web), app con el Agent SDK, una línea en CLAUDE.md, o nada. Corré esto antes del primer archivo. Se dispara con «esto lo hago como skill o como agente», «necesito un MCP o alcanza con una skill», «va como subagente o como comando», «quiero una página web hecha con Claude», «quiero una app que use Claude adentro» o «por dónde empiezo». EN: Tells you what to build in Claude Code and hands you the file skeleton: skill and which invocation mode, subagent, hook, MCP server, plugin, marketplace, scheduled routine, artifact web page, Agent SDK app, a CLAUDE.md line, or nothing at all. Triggers on «skill or agent», «do I need an MCP or is a skill enough», «should this be a slash command», «I want a web page built with Claude», «I want an app with Claude inside», «where do I even start»."
+description: "ES: Te dice qué construir en Claude Code y te da el esqueleto de archivos: skill y en qué modo, subagente, hook, servidor MCP, plugin, rutina, artefacto, app con el Agent SDK, una línea en CLAUDE.md, o nada. Corré esto antes del primer archivo. Se dispara con «esto lo hago como skill o como agente», «necesito un MCP o alcanza con una skill», «va como comando o como skill», «quiero que esto salga como una pantalla para mandarle a alguien y no como texto en la terminal», «quiero meter Claude adentro de mi app», «quiero que corra solo todas las noches» o «por dónde empiezo». EN: Tells you what to build in Claude Code and hands you the file skeleton: skill and mode, subagent, hook, MCP server, plugin, routine, artifact, Agent SDK app, a CLAUDE.md line, or nothing. Triggers on «skill or agent», «do I need an MCP», «slash command or skill», «I want this as a page I can send someone, not terminal text», «I want Claude inside my app», «run it nightly on its own», «where do I start»."
 license: MIT
 metadata:
-  version: 0.2.4
+  version: 0.2.5
 ---
 
 # Anatomía de Claude Code
@@ -102,8 +102,9 @@ Tres preguntas. La primera que da sí termina acá.
     SÍ → App con el Agent SDK, en Python o TypeScript.
 
 1.3 ¿Tiene que correr con tu computadora apagada? Cada noche, cada lunes.
-    SÍ → Rutina en la nube, con /schedule. Corre sobre un clon limpio, así
-         que no ve tus skills personales: eso viaja en el repo o en un plugin.
+    SÍ → Rutina en la nube, con /schedule. Corre sobre un clon limpio y no
+         lee tus skills locales: habilitalas en tu cuenta de claude.ai, o
+         que viajen en el repo o en un plugin.
     NO → seguí al Paso 2.
 ```
 
@@ -127,7 +128,7 @@ Cuatro preguntas. La primera que da sí fija la pieza.
 
 2.3 ¿Es un trabajador reusable, con herramientas recortadas, al que vas a
     llamar por su nombre desde varios lugares?
-    SÍ → Subagente propio, en agents/nombre.md.
+    SÍ → Subagente propio, en .claude/agents/nombre.md.
          Dato que decide muchos casos: un subagente no te puede preguntar
          nada a mitad de camino.
 
@@ -136,18 +137,25 @@ Cuatro preguntas. La primera que da sí fija la pieza.
 
 ## Los cuatro modos de una skill
 
-Acá está el cambio que más desactualiza al material viejo: **el comando y el
-subagente dejaron de ser piezas aparte y pasaron a ser campos del frontmatter.**
+Acá está el cambio que más desactualiza al material viejo: **el comando dejó de
+ser una pieza aparte y pasó a ser un campo del frontmatter de la skill.**
 
 Un archivo en `.claude/commands/deploy.md` y una skill en
-`.claude/skills/deploy/SKILL.md` producen los dos el mismo `/deploy`. Y el
-aislamiento de contexto, que antes obligaba a escribir un subagente, ahora es una
-línea.
+`.claude/skills/deploy/SKILL.md` producen los dos el mismo `/deploy`.
+
+El subagente **sigue siendo una pieza aparte**, con su archivo y su carpeta. Lo
+que cambió es otra cosa y conviene no confundirla: una skill ahora puede correr
+adentro de un subagente con `context: fork`, sin que tengas que escribirle uno
+propio. El subagente propio se justifica cuando además es reusable.
 
 | | La disparás vos | La dispara el modelo | Las dos |
 |---|---|---|---|
 | **Corre en tu conversación** | `disable-model-invocation: true` | `user-invocable: false` | el default |
-| **Corre aparte** | `disable-model-invocation` + `context: fork` | `context: fork` | `context: fork` |
+| **Corre aparte** | `disable-model-invocation: true` + `context: fork` | `user-invocable: false` + `context: fork` | `context: fork` |
+
+`context: fork` decide **dónde** corre, no **quién** la dispara. Sola no la saca
+del menú de `/`: para eso hace falta `user-invocable: false`. Son dos ejes
+distintos y se combinan.
 
 - **`disable-model-invocation: true`** es lo que antes era un comando. Va para
   cosas con consecuencias: desplegar, commitear, mandar mensajes. Regalo extra:
@@ -186,15 +194,20 @@ cobran y cuándo.
 | Skill | Una línea de descripción | El cuerpo al disparar, y ahí se queda |
 | Skill con `disable-model-invocation` | Nada | Todo, al invocarla vos |
 | Servidor MCP | Los nombres de las herramientas | El esquema, cuando se usa |
-| Subagente | Nada tuyo | Corre en su ventana y devuelve el resumen |
-| Hook | Nada | Solo lo que imprima |
+| Subagente | Nada en tu ventana | Corre en la suya y te devuelve el resumen |
+| Hook | Nada | Solo el `additionalContext` que devuelva |
 
-Dos cosas que casi nadie sabe. **Una skill que cargó se queda cargada** el resto
+Tres cosas que casi nadie sabe. **Una skill que cargó se queda cargada** el resto
 de la sesión, así que un `SKILL.md` con seis casos adentro te cobra los seis
-aunque hoy uses uno. Y **la búsqueda de herramientas difiere los esquemas de
-MCP**, así que el viejo consejo de no instalar servidores porque comen contexto
-hoy se dice distinto: lo que empeora con cuarenta herramientas no es el gasto,
-es la elección.
+aunque hoy uses uno. **La búsqueda de herramientas difiere los esquemas de MCP**,
+así que el viejo consejo de no instalar servidores porque comen contexto hoy se
+dice distinto: lo que empeora con cuarenta herramientas no es el gasto, es la
+elección. Y **el `stdout` suelto de un hook no entra al contexto**: va al log de
+depuración. Lo que Claude lee es lo que el hook devuelva en
+`hookSpecificOutput.additionalContext`.
+
+Todo esto se mide, no se estima: `/context` te muestra en qué se está yendo la
+ventana ahora mismo.
 
 Está desarrollado en `references/como-se-carga-el-contexto.md`.
 

@@ -12,21 +12,23 @@ herramientas, el mismo bucle, y vos manejás los permisos y la orquestación.
 {{mi-app}}/
 ├── app.py
 ├── requirements.txt
-├── .env                  ← ANTHROPIC_API_KEY, y no se versiona
+├── .env                  ← ANTHROPIC_API_KEY, y no se versiona.
+│                            El SDK NO lo lee solo: exportá la variable,
+│                            o cargalo vos con python-dotenv
 └── .claude/
     ├── skills/           ← el SDK las carga igual que Claude Code
     └── agents/
 ```
 
 ```python
-import anyio
+import asyncio
 from claude_agent_sdk import query
 
 async def main():
     async for mensaje in query(prompt="{{lo que tiene que hacer}}"):
         print(mensaje)
 
-anyio.run(main)
+asyncio.run(main())
 ```
 
 ## En TypeScript

@@ -47,8 +47,10 @@ apagada?
 Sí, es una rutina en la nube. No, y la sesión puede estar cerrada, es una tarea
 del escritorio. No, y alcanza con que corra mientras trabajás, es `/loop`.
 
-La trampa de la rutina: corre sobre un clon limpio y **no ve tus skills
-personales**. Lo que necesite tiene que viajar en el repo o en un plugin.
+La trampa de la rutina: corre sobre un clon limpio y **no lee la carpeta de
+skills de tu máquina**. Hay tres salidas: habilitar la skill en tu cuenta de
+claude.ai, commitearla en el `.claude/skills/` del repo, o mandarla en un plugin
+declarado en el `.claude/settings.json` del repo.
 
 El detalle en `assets/esqueleto-rutina.md`.
 
@@ -60,7 +62,9 @@ Cuando son cincuenta, y tienen que revisarse entre ellos, y el plan de quién ha
 qué no entra en una ventana de contexto, eso es un workflow: un script que
 orquesta subagentes, con el plan escrito afuera del contexto en vez de adentro.
 
-No hay carpeta que armar. Se le pide a Claude que escriba el script.
+No hay carpeta que armar para correrlo la primera vez: se le pide a Claude que
+escriba el script, que es JavaScript. Si el resultado sirve, se guarda en
+`.claude/workflows/` y queda para reusar.
 
 ## Cuando el evento viene de afuera
 
@@ -74,13 +78,21 @@ Eso es un canal. Por debajo es un servidor MCP que declara la capacidad
 Vale la pena saber que existe, sobre todo para no escribir un `/loop` que
 consulta cada cinco minutos algo que podría avisar solo.
 
-## Dos que conviene mirar y no usar todavía
+## Tres que conviene mirar antes de apoyarte en ellas
 
-**Los equipos de agentes** —varias sesiones coordinadas— y **los mensajes entre
-sesiones** están marcados como experimentales y vienen apagados.
+**Los equipos de agentes** —varias sesiones coordinadas— son experimentales y
+vienen apagados: se prenden con `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`.
+Construir algo que dependa de eso hoy es construir sobre algo que puede cambiar.
 
-Se nombran acá para que sepas que existen. Construir algo que dependa de ellos
-hoy es construir sobre algo que puede cambiar.
+**Los mensajes entre sesiones** son otra cosa, y conviene no meterlos en la misma
+bolsa: ya vienen **prendidos** en macOS y Linux, sin configurar nada. O sea que
+la pregunta no es cómo activarlos sino si querés apagarlos.
+
+**Los canales** están en vista previa. Y hay un detalle que hace perder una tarde:
+que tu servidor declare la capacidad **no alcanza**. Tiene que estar nombrado en
+`--channels` al arrancar la sesión, y mientras dure la vista previa un canal
+propio ni siquiera entra por ahí sin una bandera de desarrollo. Si armás el MCP y
+no llega ningún evento, es esto.
 
 ## La pregunta que ordena todo esto
 

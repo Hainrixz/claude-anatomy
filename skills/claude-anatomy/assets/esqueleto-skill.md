@@ -89,8 +89,10 @@ tocarlo. Si lo querés pasar a skill:
 .claude/commands/desplegar.md      →   .claude/skills/desplegar/SKILL.md
 ```
 
-Agregale `disable-model-invocation: true` para que se comporte igual que antes, y
-listo. Lo que ganás es la carpeta: ahora podés colgarle `references/` y `scripts/`.
+Mudarlo tal cual ya funciona igual. Lo que ganás es la carpeta: ahora podés
+colgarle `references/` y `scripts/`. Y si querés que solo lo dispares vos —que es
+lo que la gente suele dar por sentado de un comando— agregale
+`disable-model-invocation: true`.
 
 ## Si lo que querías era cambiar el tono, no el conocimiento
 

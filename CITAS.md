@@ -1,7 +1,22 @@
 # De dónde salió este producto
 
-`claude-anatomy` no se le ocurrió a nadie de este proyecto. Lo pidieron 14
-personas que contestaron una caja de preguntas en Instagram.
+`claude-anatomy` no se le ocurrió a nadie de este proyecto. Salió de una caja de
+preguntas en Instagram que contestaron 712 personas.
+
+## Los dos números, que son distintos
+
+La ficha de este producto en el catálogo lleva dos datos separados, y conviene
+no confundirlos:
+
+- **Demanda: 14.** Es la medida de cuánto se pidió esto, calculada sobre el
+  análisis completo de las respuestas.
+- **Cinco identificadores de origen.** Son las respuestas concretas que quedaron
+  registradas como el origen de este producto, y son las cinco de la tabla de
+  abajo.
+
+O sea que la tabla tiene cinco filas y no catorce a propósito: no es una lista
+recortada de los que pidieron, es la lista de las respuestas que la ficha cita
+como procedencia. Son dos cosas y por eso los números no coinciden.
 
 ## Los identificadores
 

@@ -71,8 +71,11 @@ por link público.
 
 ## Qué hace falta para que ande
 
-Plan Pro, Max, Team o Enterprise, y la sesión iniciada con `/login`. Una sesión
-que corre con una clave de API no puede publicar artefactos.
+Tres cosas a la vez: plan Pro, Max, Team o Enterprise —y en Enterprise, con los
+artefactos habilitados por un Owner—; la sesión iniciada con `/login`; y que el
+proveedor sea la API de Anthropic. Sobre Bedrock, Google Cloud o Microsoft Foundry
+no hay artefactos. Una sesión que corre con una clave de API tampoco puede
+publicarlos.
 
 Si Claude escribe el `.html` local y no te da ningún link, es esto: la sesión no
 cumple alguna de esas condiciones.

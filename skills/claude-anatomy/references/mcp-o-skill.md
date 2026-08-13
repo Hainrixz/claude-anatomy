@@ -77,8 +77,8 @@ El costo que sí queda es de precisión. Entre cuarenta nombres parecidos el mod
 elige peor que entre seis. Así que la regla práctica sobrevive —exponé lo que
 alguien pidió, no lo que la API tiene— pero el motivo cambió.
 
-Si querés el número de tu máquina en vez de una opinión, `/mcp` te muestra el
-costo por servidor.
+Si querés el número de tu máquina en vez de una opinión, `/context` te muestra en
+qué se está yendo la ventana, y `/mcp` cuántas herramientas expone cada servidor.
 
 ## La pregunta que resuelve el noventa por ciento
 

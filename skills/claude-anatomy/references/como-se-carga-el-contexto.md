@@ -32,7 +32,9 @@ Recién después entra lo que escribiste vos.
 - **Los esquemas de las herramientas MCP.** Por defecto, la búsqueda de
   herramientas los deja diferidos y trae solo los que la tarea pide.
 - **El prompt de un subagente.** Entra en la ventana del subagente, no en la tuya.
-- **Un hook.** No entra nunca. Lo corre el arnés, fuera del modelo.
+- **Un hook.** Su definición no entra nunca. Los tipos `command`, `http` y
+  `mcp_tool` no pasan por el modelo en absoluto; `prompt` y `agent` sí, porque son
+  una llamada al modelo disfrazada de hook.
 
 ## Las tres consecuencias que deciden casi todo
 
@@ -46,9 +48,14 @@ ventana, lee cuarenta archivos si hace falta, y te devuelve el resumen. Los
 cuarenta archivos no entran a tu conversación. A cambio no te puede preguntar
 nada a mitad de camino.
 
-**Un hook cuesta cero mientras no diga nada.** Si imprime algo para que el modelo
-lo lea, eso sí entra. Un hook que solo formatea archivos no le cuesta contexto a
-nadie.
+**Un hook cuesta cero mientras no diga nada.** Y acá hay una trampa que hace
+perder una tarde: lo que el hook imprima por salida estándar **no entra al
+contexto**, va al log de depuración. Las excepciones son `UserPromptSubmit`,
+`UserPromptExpansion` y `SessionStart`.
+
+Si querés que Claude lea algo que produjo el hook, el hook tiene que devolverlo
+en `hookSpecificOutput.additionalContext`. Un `PostToolUse` con un `echo` adentro,
+esperando que el modelo lo lea, no le llega a nadie.
 
 ## Lo que cambió con el MCP, y que conviene desaprender
 
@@ -64,8 +71,9 @@ cuarenta nombres parecidos el modelo elige peor que entre seis. Un servidor con
 herramientas «por las dudas» sigue siendo mala idea, pero por esto y no por lo
 otro.
 
-Y no hace falta que nadie te lo estime: `/mcp` te muestra el estado de cada
-servidor y lo que ocupa. Medilo en tu máquina antes de discutirlo.
+Y no hace falta que nadie te lo estime: `/context` te muestra en qué se está
+yendo la ventana, desglosado, y `/mcp` te muestra el estado y las herramientas de
+cada servidor. Medilo en tu máquina antes de discutirlo.
 
 ## Después de `/compact`
 
@@ -79,7 +87,7 @@ ni siquiera al arrancar: se queda afuera del contexto hasta que vos escribís
 ## Cómo verificar todo esto vos mismo
 
 - `/context` te muestra en qué se está yendo la ventana ahora mismo.
-- `/mcp` te muestra el costo por servidor.
+- `/mcp` te muestra el estado y las herramientas de cada servidor.
 - La documentación tiene una simulación paso a paso del arranque de una sesión,
   en la página «Explore the context window».
 

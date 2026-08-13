@@ -78,9 +78,14 @@ Todo lo de arriba es Claude llamando hacia afuera. Existe la dirección contrari
 que el sistema externo meta un evento adentro de una sesión abierta —el CI que
 falló, el mensaje que llegó— y Claude reaccione.
 
-Eso es un canal. Es un servidor MCP que declara la capacidad `claude/channel` y
-se prende con `--channels` al arrancar. La pieza es la misma; lo que cambia es
-para qué lado va la flecha.
+Eso es un canal, y está en vista previa. Es un servidor MCP por stdio que declara
+la capacidad `claude/channel`. La pieza es la misma; lo que cambia es para qué
+lado va la flecha.
+
+**Declararla no alcanza.** El servidor tiene que estar nombrado en `--channels` al
+arrancar la sesión, y mientras dure la vista previa un canal propio no está en la
+lista aprobada: para probarlo local hace falta una bandera de desarrollo. Si
+armaste el servidor y no llega ningún evento, es esto y no tu código.
 
 ## Adentro de un plugin
 

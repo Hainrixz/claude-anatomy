@@ -49,7 +49,7 @@ Envolver la API entera porque «alguna vez puede servir».
 >
 > Lo que sí queda es que el modelo elige peor entre cuarenta nombres parecidos
 > que entre seis. Expone las operaciones que alguien pidió. Y si querés el
-> número real de tu máquina, `/mcp` lo mide.
+> número real de tu máquina, `/context` lo mide.
 
 ## 4. Una skill que pide una clave de API
 

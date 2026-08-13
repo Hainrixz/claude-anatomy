@@ -73,18 +73,23 @@ Claude Code acepta todos estos en el frontmatter de un `SKILL.md`:
 
 | Campo | Para qué |
 |---|---|
-| `name` | Obligatorio |
-| `description` | Obligatorio. Es lo que hace que dispare |
+| `name` | En Claude Code es opcional: por defecto toma el nombre de la carpeta. En el estándar abierto es obligatorio |
+| `description` | Recomendado, no obligatorio: sin él se usa el primer párrafo del cuerpo. Es lo que hace que dispare, y se corta a los 1.536 caracteres |
+| `when_to_use` | Frases y ejemplos que ayudan a disparar. Se suma a `description` y comparte ese mismo tope |
 | `argument-hint` | Qué argumentos espera, para el autocompletado |
 | `arguments` | Nombres de los argumentos, para usarlos como `$nombre` |
 | `disable-model-invocation` | Solo la disparás vos |
 | `user-invocable` | En `false`, solo la dispara el modelo |
 | `allowed-tools` | Herramientas que no piden permiso durante ese turno |
-| `disallowed-tools` | Herramientas que se sacan mientras la skill está activa |
+| `disallowed-tools` | Herramientas que se sacan durante ese turno. Vuelven con tu próximo mensaje |
 | `model` | Con qué modelo corre |
+| `effort` | Nivel de esfuerzo mientras está activa |
 | `context` | En `fork`, corre en un subagente |
 | `agent` | Qué tipo de subagente, si hay `context: fork` |
-| `background` | En `false`, espera el resultado en el mismo turno |
+| `background` | Solo aplica con `context: fork`. Por defecto `true`, o sea segundo plano; en `false` esperás el resultado en el mismo turno |
+| `hooks` | Hooks atados al ciclo de vida de esta skill |
+| `paths` | Patrones que limitan cuándo se activa sola, como las reglas por ruta |
+| `shell` | `bash` o `powershell`, para los comandos embebidos |
 | `metadata` | Datos tuyos. Claude Code no los mira |
 | `license` | La licencia |
 | `compatibility` | Requisitos del entorno. Hasta 500 caracteres |

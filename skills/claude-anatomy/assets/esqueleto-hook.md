@@ -33,7 +33,7 @@
 
 | Evento | Cuándo dispara |
 |---|---|
-| `PreToolUse` | Antes de una herramienta. El único que puede bloquearla |
+| `PreToolUse` | Antes de una herramienta. El lugar habitual para negarla |
 | `PostToolUse` | Después. Para formatear, para revisar lo que quedó |
 | `UserPromptSubmit` | Cuando mandás un mensaje |
 | `SessionStart` | Al arrancar la sesión |

@@ -68,7 +68,10 @@ PASO 3 · ¿SE EMPAQUETA?  (siempre, al final)
 | | La disparás vos | La dispara el modelo | Las dos |
 |---|---|---|---|
 | **En tu conversación** | `disable-model-invocation: true` | `user-invocable: false` | el default |
-| **Aparte** | `disable-model-invocation` + `context: fork` | `context: fork` | `context: fork` |
+| **Aparte** | `disable-model-invocation: true` + `context: fork` | `user-invocable: false` + `context: fork` | `context: fork` |
+
+`context: fork` decide dónde corre, no quién la dispara: sola no la saca del
+menú de `/`. Son dos ejes distintos y se combinan.
 
 ## Dónde vive cada pieza
 
@@ -81,7 +84,7 @@ PASO 3 · ¿SE EMPAQUETA?  (siempre, al final)
 | Subagente | El hilo principal delega | `.claude/agents/nombre.md` |
 | Hook | Un evento de Claude Code | `.claude/settings.json` |
 | Servidor MCP | El modelo llama una herramienta | `.mcp.json` |
-| Canal | Un sistema de afuera empuja | Un MCP con `claude/channel` |
+| Canal (vista previa) | Un sistema de afuera empuja | Un MCP con `claude/channel`, arrancado con `--channels` |
 | Plugin | Se instala como paquete | `.claude-plugin/plugin.json` |
 | Marketplace | Se agrega una vez | `.claude-plugin/marketplace.json` |
 | Artefacto | Lo publica la sesión | Un link de claude.ai |
@@ -94,5 +97,13 @@ PASO 3 · ¿SE EMPAQUETA?  (siempre, al final)
 revisen entre ellos. Es un script que orquesta y guarda el plan afuera del
 contexto.
 
-**Equipos de agentes y mensajes entre sesiones.** Existen, están marcados como
-experimentales y vienen apagados. No conviene apoyar nada en ellos todavía.
+**Equipos de agentes.** Varias sesiones coordinadas. Es experimental y viene
+apagado: se prende con `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`. No conviene
+apoyar nada en eso todavía.
+
+**Mensajes entre sesiones.** Esto es distinto y conviene no confundirlo: ya viene
+**prendido** en macOS y Linux, sin configurar nada. Se apaga, no se prende.
+
+**Canales.** Están en vista previa. Declarar la capacidad no alcanza: el servidor
+tiene que nombrarse en `--channels` al arrancar, y uno propio todavía no entra
+por ahí sin una bandera de desarrollo.

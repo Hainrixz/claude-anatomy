@@ -99,6 +99,7 @@ También podés clonar el repo y copiar la carpeta a mano:
 
 ```bash
 git clone https://github.com/Hainrixz/claude-anatomy
+mkdir -p .claude/skills
 cp -R claude-anatomy/skills/claude-anatomy .claude/skills/
 ```
 
@@ -194,7 +195,7 @@ flowchart TD
     P3 -->|sí| PLUG
     P3 -->|no| SUELTO
 
-    classDef pregunta fill:#FBF1E8,stroke:#E9C9AE,stroke-width:2px,color:#161210
+    classDef pregunta fill:#FBF1E8,stroke:#C8542E,stroke-width:2px,color:#161210
     classDef pieza fill:#F4D9C4,stroke:#C8542E,stroke-width:2px,color:#161210
     classDef foco fill:#E1693F,stroke:#C8542E,stroke-width:2px,color:#0B0B0D
 
@@ -299,7 +300,7 @@ skills/claude-anatomy/
 │   └── anti-patrones.md              los once, con antes y después
 ├── assets/                           se copian, no se leen
 │   ├── arbol-de-decision.md          el árbol entero en una página
-│   └── esqueleto-*.md                nueve esqueletos, uno por pieza
+│   └── esqueleto-*.md                ocho esqueletos, uno por pieza
 └── evals/
     ├── evals.json                    20 pruebas de disparo
     └── decisiones.json               12 pruebas de decisión
@@ -321,9 +322,11 @@ asume que ya decidiste construir, y falta elegir la forma.
 
 ## De dónde salió
 
-Lo pidieron 14 personas que contestaron una caja de preguntas. Los
-identificadores están en [CITAS.md](CITAS.md). No se publica el texto de ningún
-comentario ni el usuario de nadie.
+De una caja de preguntas en Instagram que contestaron 712 personas. Este producto
+tiene una demanda medida de 14 y cinco respuestas registradas como su origen; en
+[CITAS.md](CITAS.md) está la diferencia entre esos dos números y los cinco
+identificadores. No se publica el texto de ningún comentario ni el usuario de
+nadie.
 
 ## Cómo se verificó
 
@@ -346,5 +349,5 @@ corrió y una prueba que no: lo primero está verificado, lo segundo no.
 
 MIT — ver [LICENSE](LICENSE).
 
-Proyecto de la comunidad, construido con [la forja](https://github.com/Hainrixz/la-forja).
+Proyecto de la comunidad, construido con la forja de [tododeia.com](https://www.tododeia.com).
 **No afiliado a Anthropic.**
