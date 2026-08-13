@@ -88,7 +88,7 @@ O con el `.zip` del [último Release](https://github.com/Hainrixz/claude-anatomy
 
 ```bash
 mkdir -p .claude/skills
-unzip claude-anatomy-skill-*.zip -d .claude/skills/
+unzip anatomia-cc-*.zip -d .claude/skills/
 ```
 
 Eso la deja en el proyecto. Para tenerla en todos, descomprimila en la carpeta
@@ -107,7 +107,7 @@ cp -R claude-anatomy/skills/anatomia-cc .claude/skills/
 
 Sirve el mismo `.zip`, sin tocar nada.
 
-1. Descargá `claude-anatomy-skill-*.zip` del [último Release](https://github.com/Hainrixz/claude-anatomy/releases/latest).
+1. Descargá `anatomia-cc-*.zip` del [último Release](https://github.com/Hainrixz/claude-anatomy/releases/latest).
 2. En la app, andá a **Customize → Skills**.
 3. Tocá **+**, después **Crear skill**, y después **Subir una skill**.
 4. Elegí el `.zip`. Listo.

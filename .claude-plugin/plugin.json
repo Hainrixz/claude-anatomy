@@ -1,6 +1,6 @@
 {
   "name": "claude-anatomy",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Te dice qué construir en Claude Code —skill, subagente, hook, servidor MCP, plugin, rutina, una página web, una app, o nada— con el árbol de decisión y el esqueleto de archivos de la pieza elegida.",
   "author": {
     "name": "Hainrixz",
