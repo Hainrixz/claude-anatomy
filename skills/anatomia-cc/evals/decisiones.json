@@ -1,5 +1,5 @@
 {
-  "skill_name": "claude-anatomy",
+  "skill_name": "anatomia-cc",
   "tipo": "decision",
   "nota": "Un set de disparo mide si la skill se activa. No distingue un árbol correcto de uno que contesta «subagente» a todo. Estos 12 casos miden la RESPUESTA: una pieza por rama, y las que no hay que construir.",
   "umbral": "10 de 12. Un caso que recomienda una pieza de más cuenta como error aunque la pieza nombrada sea razonable.",

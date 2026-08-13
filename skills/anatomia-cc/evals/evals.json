@@ -1,5 +1,5 @@
 {
-  "skill_name": "claude-anatomy",
+  "skill_name": "anatomia-cc",
   "nota": "Estas 20 miden UNA cosa: si la skill se activa cuando corresponde y se queda quieta cuando no. Si la recomendación que devuelve es la correcta se mide aparte, en decisiones.json.",
   "umbral": "9 de 10 en cada grupo. Con 8 aciertos en should-trigger, se reescribe la descripción.",
   "evals": [
@@ -10,7 +10,7 @@
       "expected_output": "La skill carga y corre el árbol sobre lo que la persona quiere construir.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy aparece cargada en la traza.",
+        "La skill anatomia-cc aparece cargada en la traza.",
         "Pregunta qué se quiere construir antes de recomendar una pieza."
       ]
     },
@@ -21,7 +21,7 @@
       "expected_output": "La skill carga y corre el árbol con lo que se sabe del pedido.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy aparece cargada en la traza.",
+        "La skill anatomia-cc aparece cargada en la traza.",
         "Devuelve una sola pieza, no un menú de opciones."
       ]
     },
@@ -32,7 +32,7 @@
       "expected_output": "La skill carga y explica que los comandos se fusionaron con las skills, y que la diferencia hoy es el modo de invocación.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy aparece cargada en la traza.",
+        "La skill anatomia-cc aparece cargada en la traza.",
         "Menciona disable-model-invocation como la forma actual de que la dispare solo la persona."
       ]
     },
@@ -43,7 +43,7 @@
       "expected_output": "La skill carga y resuelve por la señal de la credencial: servidor MCP, con una skill de criterio encima si hace falta juicio.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy aparece cargada en la traza.",
+        "La skill anatomia-cc aparece cargada en la traza.",
         "Nombra la credencial como el dato que decide."
       ]
     },
@@ -54,7 +54,7 @@
       "expected_output": "La skill carga y llega a artefacto por el Paso 1, con los límites dichos.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy aparece cargada en la traza.",
+        "La skill anatomia-cc aparece cargada en la traza.",
         "Aclara que un artefacto es una página sola y sin backend."
       ]
     },
@@ -65,7 +65,7 @@
       "expected_output": "La skill carga y llega a app con el Agent SDK por el Paso 1.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy aparece cargada en la traza.",
+        "La skill anatomia-cc aparece cargada en la traza.",
         "Distingue el caso de quien usa Claude Code del de quien no lo tiene."
       ]
     },
@@ -76,7 +76,7 @@
       "expected_output": "La skill carga y llega a rutina en la nube, con la advertencia de que no ve las skills personales.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy aparece cargada en la traza.",
+        "La skill anatomia-cc aparece cargada en la traza.",
         "Menciona que la rutina corre sobre un clon limpio."
       ]
     },
@@ -87,7 +87,7 @@
       "expected_output": "La skill carga y usa quién lo dispara como pregunta que ordena el caso.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy aparece cargada en la traza.",
+        "La skill anatomia-cc aparece cargada en la traza.",
         "Identifica que se dispara por un evento y no por el criterio del modelo."
       ]
     },
@@ -98,7 +98,7 @@
       "expected_output": "La skill carga y corre el árbol, contestando en el idioma en que se preguntó.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy aparece cargada en la traza.",
+        "La skill anatomia-cc aparece cargada en la traza.",
         "Devuelve una sola pieza con el motivo."
       ]
     },
@@ -109,7 +109,7 @@
       "expected_output": "La skill carga y resuelve el Paso 3: plugin si hay dos o más piezas, marketplace encima si se reparte.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy aparece cargada en la traza.",
+        "La skill anatomia-cc aparece cargada en la traza.",
         "Distingue empaquetar de repartir."
       ]
     },
@@ -120,7 +120,7 @@
       "expected_output": "No es una decisión de forma: la pieza ya está elegida y lo que falta es escribirla. El trabajo es de skill-smith.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy no se activa, o deriva explícitamente a skill-smith."
+        "La skill anatomia-cc no se activa, o deriva explícitamente a skill-smith."
       ]
     },
     {
@@ -130,7 +130,7 @@
       "expected_output": "Es cómo se escribe una skill, no qué pieza construir.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy no se activa."
+        "La skill anatomia-cc no se activa."
       ]
     },
     {
@@ -140,7 +140,7 @@
       "expected_output": "Es depuración de una pieza que ya existe y ya fue elegida.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy no se activa."
+        "La skill anatomia-cc no se activa."
       ]
     },
     {
@@ -150,7 +150,7 @@
       "expected_output": "Es instalación del producto, no arquitectura de una extensión.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy no se activa."
+        "La skill anatomia-cc no se activa."
       ]
     },
     {
@@ -160,7 +160,7 @@
       "expected_output": "La pieza ya está elegida y publicada: lo que se pregunta es cómo se usa.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy no se activa."
+        "La skill anatomia-cc no se activa."
       ]
     },
     {
@@ -170,7 +170,7 @@
       "expected_output": "Es una edición concreta de un archivo, no la pregunta de dónde va la regla.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy no se activa."
+        "La skill anatomia-cc no se activa."
       ]
     },
     {
@@ -180,7 +180,7 @@
       "expected_output": "La palabra hook está en otro sentido: es React, no Claude Code.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy no se activa."
+        "La skill anatomia-cc no se activa."
       ]
     },
     {
@@ -190,7 +190,7 @@
       "expected_output": "La palabra hook está en otro sentido, esta vez en inglés.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy no se activa."
+        "La skill anatomia-cc no se activa."
       ]
     },
     {
@@ -200,7 +200,7 @@
       "expected_output": "Es una instalación de algo que ya existe, no una decisión de qué construir.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy no se activa."
+        "La skill anatomia-cc no se activa."
       ]
     },
     {
@@ -210,7 +210,7 @@
       "expected_output": "Vecino de dominio sin relación con elegir una pieza.",
       "files": [],
       "expectations": [
-        "La skill claude-anatomy no se activa."
+        "La skill anatomia-cc no se activa."
       ]
     }
   ]

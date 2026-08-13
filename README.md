@@ -100,7 +100,7 @@ También podés clonar el repo y copiar la carpeta a mano:
 ```bash
 git clone https://github.com/Hainrixz/claude-anatomy
 mkdir -p .claude/skills
-cp -R claude-anatomy/skills/claude-anatomy .claude/skills/
+cp -R claude-anatomy/skills/anatomia-cc .claude/skills/
 ```
 
 ### En la app de Claude
@@ -133,8 +133,26 @@ sesión.
 > Las tareas programadas del escritorio son la excepción: corren en tu máquina y
 > leen lo mismo que cualquier sesión local.
 
-> La carpeta tiene que llamarse igual que el `name` del frontmatter. Si la
-> renombrás, la skill no carga.
+### Por qué la skill se llama `anatomia-cc` y el repo `claude-anatomy`
+
+No es un descuido. Las superficies alojadas por Anthropic —la subida a
+claude.ai, Cowork y la Skills API— **rechazan un `name` que contenga «claude» o
+«anthropic»**, en cualquier posición. Es una reserva de marca: sirve para que
+ninguna skill de terceros pueda hacerse pasar por oficial.
+
+Claude Code no aplica esa regla, así que la primera versión de esta skill se
+llamaba `claude-anatomy` y funcionaba perfecto ahí… y no subía a la app. El
+nombre del repo, el del plugin y los comandos de instalación no tienen esa
+restricción y por eso siguen igual.
+
+Dos consecuencias prácticas para vos, si estás por publicar una skill:
+
+- El `name` del frontmatter y **el nombre de la carpeta tienen que coincidir**.
+  Eso lo pide la Skills API, no Claude Code: acá el `name` es solo la etiqueta y
+  el comando sale del nombre de la carpeta. Si renombrás la carpeta en Claude
+  Code, la skill sigue cargando y lo que cambia es el comando.
+- El validador oficial `quick_validate.py` **no detecta la palabra reservada**.
+  Empaqueta contento y el rechazo aparece recién al subir.
 
 ### Qué cambia en cada lado
 
@@ -285,12 +303,12 @@ seis.
 | Pedir un artefacto esperando una app | Si guarda datos, la hospedás vos |
 
 Los once, con el antes y el después de cada uno, están en
-[`references/anti-patrones.md`](skills/claude-anatomy/references/anti-patrones.md).
+[`references/anti-patrones.md`](skills/anatomia-cc/references/anti-patrones.md).
 
 ## Qué hay adentro
 
 ```
-skills/claude-anatomy/
+skills/anatomia-cc/
 ├── SKILL.md                          el árbol y el contrato de salida
 ├── references/                       se leen solo si hacen falta
 │   ├── como-se-carga-el-contexto.md  qué entra en el turno cero, y qué no
@@ -335,7 +353,7 @@ cero errores y cero avisos. Revisa el frontmatter, los límites de la descripci�
 que todos los enlaces relativos resuelvan, que no viaje ninguna credencial ni
 ninguna ruta de la máquina del autor, y que las citas resuelvan contra el corpus.
 
-Hay dos sets de pruebas en [`evals/`](skills/claude-anatomy/evals):
+Hay dos sets de pruebas en [`evals/`](skills/anatomia-cc/evals):
 
 | Archivo | Qué mide | Casos | Estado |
 |---|---|---|---|

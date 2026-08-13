@@ -1,9 +1,9 @@
 ---
-name: claude-anatomy
+name: anatomia-cc
 description: "ES: Te dice qué construir en Claude Code y te da el esqueleto de archivos: skill y en qué modo, subagente, hook, servidor MCP, plugin, rutina, artefacto, app con el Agent SDK, una línea en CLAUDE.md, o nada. Corré esto antes del primer archivo. Se dispara con «esto lo hago como skill o como agente», «necesito un MCP o alcanza con una skill», «va como comando o como skill», «quiero que esto salga como una pantalla para mandarle a alguien y no como texto en la terminal», «quiero meter Claude adentro de mi app», «quiero que corra solo todas las noches» o «por dónde empiezo». EN: Tells you what to build in Claude Code and hands you the file skeleton: skill and mode, subagent, hook, MCP server, plugin, routine, artifact, Agent SDK app, a CLAUDE.md line, or nothing. Triggers on «skill or agent», «do I need an MCP», «slash command or skill», «I want this as a page I can send someone, not terminal text», «I want Claude inside my app», «run it nightly on its own», «where do I start»."
 license: MIT
 metadata:
-  version: 0.2.5
+  version: 0.3.0
 ---
 
 # Anatomía de Claude Code
