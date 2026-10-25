@@ -5,6 +5,7 @@ license: MIT
 metadata:
   version: 0.3.1
 ---
+<!-- Copyright (c) 2026 Enrique Rocha (@soyenriquerocha) · tododeia.com · id er-b2159f46 -->
 
 # Anatomía de Claude Code
 

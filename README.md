@@ -369,3 +369,10 @@ MIT — ver [LICENSE](LICENSE).
 
 Proyecto de la comunidad, construido con la forja de [tododeia.com](https://www.tododeia.com).
 **No afiliado a Anthropic.**
+
+<!-- marca-agua:inicio -->
+
+---
+
+<sub>Hecho por **Enrique Rocha (@soyenriquerocha)** · [tododeia.com](https://www.tododeia.com)⁠​‌‌​​‌​‌​‌‌‌​​‌​​​‌​‌‌​‌​‌‌​​​‌​​​‌‌​​‌​​​‌‌​​​‌​​‌‌​‌​‌​​‌‌‌​​‌​‌‌​​‌‌​​​‌‌​‌​​​​‌‌​‌‌​⁠</sub>
+<!-- marca-agua:fin -->
